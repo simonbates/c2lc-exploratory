@@ -94,6 +94,6 @@ jqUnit.test("Step a program with an unknown action", function () {
         interpreter.step();
         jqUnit.fail("Exception should have been thrown");
     } catch (e) {
-        jqUnit.assert("Exception expected");
+        jqUnit.assertEquals("Exception expected", "Unknown action: unknown-action", e.message);
     }
 });
