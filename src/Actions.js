@@ -7,6 +7,19 @@ var jQuery = fluid.registerNamespace("jQuery");
 
     var c2lc = fluid.registerNamespace("c2lc");
 
+    fluid.defaults("c2lc.actions.log", {
+        gradeNames: "c2lc.actionHandler",
+        message: null, // To be provided
+        invokers: {
+            handleAction: {
+                funcName: "console.log",
+                args: [
+                    "{that}.options.message"
+                ]
+            }
+        }
+    });
+
     fluid.defaults("c2lc.actions.increment", {
         gradeNames: "c2lc.actionHandler",
         modelPath: null, // To be provided
