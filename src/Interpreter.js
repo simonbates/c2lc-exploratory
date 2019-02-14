@@ -36,8 +36,9 @@ var jQuery = fluid.registerNamespace("jQuery");
             if (actionHandler) {
                 actionHandler.handleAction(interpreter);
                 interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
+            } else {
+                throw new Error("Unknown action: " + action);
             }
-            // TODO: Complain, unknown action
         }
     };
 
