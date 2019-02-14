@@ -11,6 +11,7 @@ var jQuery = fluid.registerNamespace("jQuery");
         gradeNames: "fluid.component",
         invokers: {
             handleAction: "fluid.notImplemented"
+            // Params: interpreter
         }
     });
 
