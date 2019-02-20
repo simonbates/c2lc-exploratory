@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>C2LC all-tests runner</title>
+
+        <link rel="stylesheet" href="../node_modules/infusion/tests/lib/qunit/css/qunit.css" media="screen">
+        <link rel="stylesheet" href="../node_modules/infusion/tests/lib/qunit/addons/composite/qunit-composite.css">
+
+        <script src="../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script src="../node_modules/infusion/tests/lib/qunit/addons/composite/qunit-composite.js"></script>
+
+        <script>
+            QUnit.testSuites([
+                "html/InterpreterTests.html"
+            ]);
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+    </body>
+</html>

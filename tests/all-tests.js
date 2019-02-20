@@ -15,4 +15,4 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 require("../src/Interpreter.js");
 require("../src/Actions.js");
 
-require("./InterpreterTests.js");
+require("./js/InterpreterTests.js");
