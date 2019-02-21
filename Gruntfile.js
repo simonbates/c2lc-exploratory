@@ -14,6 +14,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
 module.exports = function (grunt) {
     grunt.config.init({
+        connect: {
+            devServer: {
+                options: {
+                    hostname: "127.0.0.1",
+                    port: 8081,
+                    keepalive: true
+                }
+            }
+        },
         lintAll: {
             sources: {
                 js: ["*.js"],
@@ -23,8 +32,10 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks("gpii-grunt-lint-all");
+    grunt.loadNpmTasks("grunt-contrib-connect");
 
-    grunt.registerTask("lint", "Perform all standard lint checks.", ["lint-all"]);
+    grunt.registerTask("lint", "Perform lint checks", ["lint-all"]);
+    grunt.registerTask("serve", "Run local dev web server", ["connect:devServer"]);
 
-    grunt.registerTask("default", ["lint"]);
+    grunt.registerTask("default", ["serve"]);
 };

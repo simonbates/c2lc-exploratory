@@ -8,10 +8,9 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
-var fluid = fluid || require("infusion"); // eslint-disable-line no-undef
-var jqUnit = jqUnit || fluid.require("node-jqunit");
+/* global jqUnit */
 
-(function (fluid, jqUnit) {
+(function () {
 
     "use strict";
 
@@ -109,4 +108,4 @@ var jqUnit = jqUnit || fluid.require("node-jqunit");
         }
     });
 
-})(fluid, jqUnit);
+})();
