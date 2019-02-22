@@ -55,10 +55,20 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         modelListeners: {
-            "location": {
+            updateTurtle: {
+                path: ["location", "directionDegrees"],
+                funcName: "c2lc.turtleGraphics.updateTurtle",
+                args: [
+                    "{that}.dom.turtle",
+                    "{that}.model.location",
+                    "{that}.model.directionDegrees"
+                ]
+            },
+            drawLine: {
+                path: "location",
                 funcName: "c2lc.turtleGraphics.drawLine",
                 args: [
-                    "{that}.dom.svgElem",
+                    "{that}.dom.linesContainer",
                     "{change}.oldValue",
                     "{change}.value"
                 ],
@@ -66,10 +76,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         selectors: {
-            svgElem: ".c2lc-turtleGraphics-svg"
+            turtle: ".c2lc-turtleGraphics-turtle",
+            linesContainer: ".c2lc-turtleGraphics-lines"
         },
         markup: {
-            drawingArea: "<span role='img' aria-label='Drawing area'><svg class='c2lc-turtleGraphics-svg' xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'></svg></span>"
+            drawingArea: "<span role='img' aria-label='Drawing area'><svg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'><g class='c2lc-turtleGraphics-lines'/><polygon class='c2lc-turtleGraphics-turtle' points='-5 3 5 3 0 -8'/></svg></span>"
         }
     });
 
@@ -91,13 +102,23 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         turtleGraphics.applier.change("directionDegrees", c2lc.math.wrap(0, 360, turtleGraphics.model.directionDegrees + amountDegrees));
     };
 
-    c2lc.turtleGraphics.drawLine = function (svgElem, fromLocation, toLocation) {
+    c2lc.turtleGraphics.updateTurtle = function (turtleElem, location, directionDegrees) {
+        turtleElem.attr("transform",
+            fluid.stringTemplate("translate(%x %y) rotate(%dir 0 0)", {
+                dir: directionDegrees,
+                x: location.x,
+                y: location.y
+            })
+        );
+    };
+
+    c2lc.turtleGraphics.drawLine = function (linesContainer, fromLocation, toLocation) {
         var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttributeNS(null, "x1", fromLocation.x);
         line.setAttributeNS(null, "y1", fromLocation.y);
         line.setAttributeNS(null, "x2", toLocation.x);
         line.setAttributeNS(null, "y2", toLocation.y);
-        svgElem.append(line);
+        linesContainer.append(line);
     };
 
 })();

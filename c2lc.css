@@ -2,6 +2,11 @@
     width: 600px;
     height: 600px;
     stroke: #000;
-    stroke-width: 4;
+    stroke-width: 3;
     stroke-linecap: round;
+}
+
+.c2lc-turtleGraphics-turtle {
+    fill: #48f;
+    stroke-width: 0.3;
 }
