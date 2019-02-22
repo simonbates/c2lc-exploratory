@@ -56,7 +56,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-contrib-copy");
 
-    grunt.registerTask("build", "Build for deployment", ["clean:build", "copy:build"]);
+    grunt.registerTask("createNojekyll",
+        "Create an empty build/.nojekyll file",
+        function () {
+            grunt.file.write("build/.nojekyll", "");
+        }
+    );
+
+    grunt.registerTask("build", "Build the project for deployment to a web server", [
+        "clean:build", "copy:build", "createNojekyll"
+    ]);
     grunt.registerTask("lint", "Perform lint checks", ["lint-all"]);
     grunt.registerTask("server", "Run a local dev web server", ["connect:devServer"]);
 
