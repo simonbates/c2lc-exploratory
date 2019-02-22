@@ -47,11 +47,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         listeners: {
-            "onCreate.renderSpace": {
-                funcName: "c2lc.turtleGraphics.renderSpace",
+            "onCreate.renderDrawingArea": {
+                funcName: "c2lc.turtleGraphics.renderDrawingArea",
                 args: [
                     "{that}.container",
-                    "{that}.options.markup.space"
+                    "{that}.options.markup.drawingArea"
                 ]
             }
         },
@@ -70,11 +70,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             svgElem: ".c2lc-turtleGraphics-svg"
         },
         markup: {
-            space: "<span role='img'><svg class='c2lc-turtleGraphics-svg' xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'></svg></span>"
+            drawingArea: "<span role='img' aria-label='Drawing area'><svg class='c2lc-turtleGraphics-svg' xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'></svg></span>"
         }
     });
 
-    c2lc.turtleGraphics.renderSpace = function (container, markup) {
+    c2lc.turtleGraphics.renderDrawingArea = function (container, markup) {
         container.html(markup);
     };
 
