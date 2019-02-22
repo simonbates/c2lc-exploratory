@@ -48,11 +48,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         listeners: {
             "onCreate.renderDrawingArea": {
-                funcName: "c2lc.turtleGraphics.renderDrawingArea",
-                args: [
-                    "{that}.container",
-                    "{that}.options.markup.drawingArea"
-                ]
+                "this": "{that}.container",
+                method: "html",
+                args: ["{that}.options.markup.drawingArea"]
+
             }
         },
         modelListeners: {
@@ -73,10 +72,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             drawingArea: "<span role='img' aria-label='Drawing area'><svg class='c2lc-turtleGraphics-svg' xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'></svg></span>"
         }
     });
-
-    c2lc.turtleGraphics.renderDrawingArea = function (container, markup) {
-        container.html(markup);
-    };
 
     c2lc.turtleGraphics.forward = function (turtleGraphics, distance) {
         var directionRadians = c2lc.math.degrees2radians(turtleGraphics.model.directionDegrees);

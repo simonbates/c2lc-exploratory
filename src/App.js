@@ -15,8 +15,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.app", {
         gradeNames: "fluid.modelComponent",
         graphicsContainer: null, // To be provided
+        controlsContainer: null, // To be provided
         model: {
-            program: null // To be provided
+            program: []
         },
         components: {
             interpreter: {
@@ -70,6 +71,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             graphics: {
                 type: "c2lc.turtleGraphics",
                 container: "{app}.options.graphicsContainer"
+            },
+            controls: {
+                type: "c2lc.interpreterControls",
+                container: "{app}.options.controlsContainer",
+                options: {
+                    listeners: {
+                        "onStep.stepInterpreter": {
+                            func: "{interpreter}.step"
+                        }
+                    }
+                }
             }
         }
     });

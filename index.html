@@ -10,14 +10,17 @@
         <script src="src/Interpreter.js"></script>
         <script src="src/Math.js"></script>
         <script src="src/TurtleGraphics.js"></script>
+        <script src="src/InterpreterControls.js"></script>
         <script src="src/App.js"></script>
     </head>
     <body>
         <div class="c2lc-graphics"></div>
+        <div class="c2lc-controls"></div>
         <script>
             $(document).ready(function () {
                 var app = c2lc.app({
                     graphicsContainer: ".c2lc-graphics",
+                    controlsContainer: ".c2lc-controls",
                     model: {
                         program: [
                             "forward",
@@ -30,13 +33,6 @@
                         ]
                     }
                 });
-                app.interpreter.step();
-                app.interpreter.step();
-                app.interpreter.step();
-                app.interpreter.step();
-                app.interpreter.step();
-                app.interpreter.step();
-                app.interpreter.step();
             });
         </script>
     </body>
