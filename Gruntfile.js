@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-connect");
 
     grunt.registerTask("lint", "Perform lint checks", ["lint-all"]);
-    grunt.registerTask("serve", "Run local dev web server", ["connect:devServer"]);
+    grunt.registerTask("server", "Run a local dev web server", ["connect:devServer"]);
 
-    grunt.registerTask("default", ["serve"]);
+    grunt.registerTask("default", ["server"]);
 };
