@@ -1,12 +1,27 @@
+.c2lc-container {
+    text-align: center;
+}
+
+.c2lc-graphics {
+    margin: 1rem 0;
+    border: 3px solid #555;
+    border-radius: 4%;
+    display: inline-block;
+}
+
 .c2lc-graphics svg {
-    width: 600px;
-    height: 600px;
-    stroke: #000;
+    width: 32rem;
+    height: 32rem;
+    stroke: #222;
     stroke-width: 3;
     stroke-linecap: round;
 }
 
 .c2lc-turtleGraphics-turtle {
-    fill: #48f;
+    fill: #2ae;
     stroke-width: 0.3;
+}
+
+.c2lc-controls {
+    margin: 1rem 0;
 }

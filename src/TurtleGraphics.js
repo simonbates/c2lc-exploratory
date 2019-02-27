@@ -80,7 +80,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             linesContainer: ".c2lc-turtleGraphics-lines"
         },
         markup: {
-            drawingArea: "<span role='img' aria-label='Drawing area'><svg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'><g class='c2lc-turtleGraphics-lines'/><polygon class='c2lc-turtleGraphics-turtle' points='-5 3 5 3 0 -8'/></svg></span>"
+            drawingArea: "<span role='img' aria-label='Drawing area'><svg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'><g class='c2lc-turtleGraphics-lines'/><polygon class='c2lc-turtleGraphics-turtle' points='-6 4 6 4 0 -9'/></svg></span>"
         }
     });
 
