@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Interpreter Tests</title>
+        <title>Turtle Graphics Tests</title>
 
         <link rel="stylesheet" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" media="screen"/>
 
@@ -10,17 +10,26 @@
         <script src="../../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
         <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
         <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit-browser.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/utils/js/IoCTestUtils.js"></script>
 
-        <script src="../../src/Interpreter.js"></script>
-        <script src="../../src/Actions.js"></script>
+        <script src="../../src/Math.js"></script>
+        <script src="../../src/TurtleGraphics.js"></script>
 
-        <script src="../js/InterpreterTests.js"></script>
+        <script src="../js/TurtleGraphicsTests.js"></script>
     </head>
     <body id="body">
-        <h1 id="qunit-header">Interpreter Tests</h1>
+        <h1 id="qunit-header">Turtle Graphics Tests</h1>
         <h2 id="qunit-banner"></h2>
         <div id="qunit-testrunner-toolbar"></div>
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
+
+        <div class="c2lc-graphics"></div>
+
+        <script>
+            $(document).ready(function () {
+                fluid.test.runTests("c2lc.tests.turtleGraphicsTestTree");
+            });
+        </script>
     </body>
 </html>

@@ -14,6 +14,35 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
 module.exports = function (grunt) {
     grunt.config.init({
+        clean: {
+            build: ["build"]
+        },
+        copy: {
+            build: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: ".",
+                        src: [
+                            "node_modules/infusion/dist/infusion-all.js",
+                            "src/**",
+                            "index.html",
+                            "c2lc.css"
+                        ],
+                        dest: "build"
+                    }
+                ]
+            }
+        },
+        connect: {
+            devServer: {
+                options: {
+                    hostname: "127.0.0.1",
+                    port: 8081,
+                    keepalive: true
+                }
+            }
+        },
         lintAll: {
             sources: {
                 js: ["*.js"],
@@ -23,8 +52,22 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks("gpii-grunt-lint-all");
+    grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-contrib-connect");
+    grunt.loadNpmTasks("grunt-contrib-copy");
 
-    grunt.registerTask("lint", "Perform all standard lint checks.", ["lint-all"]);
+    grunt.registerTask("createNojekyll",
+        "Create an empty build/.nojekyll file",
+        function () {
+            grunt.file.write("build/.nojekyll", "");
+        }
+    );
 
-    grunt.registerTask("default", ["lint"]);
+    grunt.registerTask("build", "Build the project for deployment to a web server", [
+        "clean:build", "copy:build", "createNojekyll"
+    ]);
+    grunt.registerTask("lint", "Perform lint checks", ["lint-all"]);
+    grunt.registerTask("server", "Run a local dev web server", ["connect:devServer"]);
+
+    grunt.registerTask("default", ["build"]);
 };

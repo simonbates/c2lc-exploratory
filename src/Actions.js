@@ -8,10 +8,7 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
-var fluid = fluid || require("infusion"); // eslint-disable-line no-undef
-var jQuery = fluid.registerNamespace("jQuery");
-
-(function ($, fluid) {
+(function () {
 
     "use strict";
 
@@ -48,4 +45,4 @@ var jQuery = fluid.registerNamespace("jQuery");
         interpreter.applier.change(modelPath, fluid.get(interpreter.model, modelPath) + 1);
     };
 
-})(jQuery, fluid);
+})();
