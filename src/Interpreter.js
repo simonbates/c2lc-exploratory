@@ -30,12 +30,25 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             programCounter: 0
         },
         invokers: {
+            reset: {
+                funcName: "c2lc.interpreter.reset",
+                args: "{that}"
+            },
             step: {
                 funcName: "c2lc.interpreter.step",
                 args: "{that}"
             }
+        },
+        modelListeners: {
+            program: {
+                func: "{that}.reset"
+            }
         }
     });
+
+    c2lc.interpreter.reset = function (interpreter) {
+        interpreter.applier.change("programCounter", 0);
+    };
 
     c2lc.interpreter.step = function (interpreter) {
         if (interpreter.model.programCounter < interpreter.model.program.length) {

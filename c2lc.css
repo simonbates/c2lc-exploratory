@@ -2,14 +2,17 @@
     text-align: center;
 }
 
-.c2lc-graphics {
+.c2lc-graphics, .c2lc-textEditor, .c2lc-controls {
     margin: 1rem 0;
+}
+
+.c2lc-turtleGraphics-drawingArea {
     border: 3px solid #555;
     border-radius: 4%;
     display: inline-block;
 }
 
-.c2lc-graphics svg {
+.c2lc-turtleGraphics-drawingArea svg {
     width: 32rem;
     height: 32rem;
     stroke: #222;
@@ -22,6 +25,6 @@
     stroke-width: 0.3;
 }
 
-.c2lc-controls {
-    margin: 1rem 0;
+.c2lc-textEditor textarea {
+    font-size: 2rem;
 }
