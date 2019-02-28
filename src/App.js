@@ -66,6 +66,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                 }
                             }
                         }
+                    },
+                    listeners: {
+                        "onStart.resetGraphics": {
+                            func: "{graphics}.reset"
+                        }
                     }
                 }
             },
@@ -92,11 +97,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         }
                     }
                 }
-            }
-        },
-        modelListeners: {
-            program: {
-                func: "{graphics}.reset"
             }
         }
     });

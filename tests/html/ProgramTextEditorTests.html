@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Program Text Editor Tests</title>
+
+        <link rel="stylesheet" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" media="screen"/>
+
+        <script src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <script src="../../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit-browser.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/utils/js/IoCTestUtils.js"></script>
+
+        <script src="../../src/ProgramTextEditor.js"></script>
+
+        <script src="../js/ProgramTextEditorTests.js"></script>
+    </head>
+    <body id="body">
+        <h1 id="qunit-header">Program Text Editor Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <div class="c2lc-textEditor"></div>
+
+        <script>
+            $(document).ready(function () {
+                fluid.test.runTests("c2lc.tests.programTextEditorTestTree");
+            });
+        </script>
+    </body>
+</html>

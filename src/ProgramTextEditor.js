@@ -31,9 +31,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 method: "html",
                 args: ["{that}.options.markup.textEditor"]
             },
-            // TODO: This is necessary because the model listener fires too soon
-            //       Other options here?
-            "onCreate.initTextArea": {
+            "onCreate.setInitialTextEditorContents": {
                 priority: "after:renderTextEditor",
                 funcName: "c2lc.programTextEditor.updateTextareaFromProgram",
                 args: ["{that}.model.program", "{that}.dom.textEditor"]
@@ -48,7 +46,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         modelListeners: {
             program: {
                 funcName: "c2lc.programTextEditor.updateTextareaFromProgram",
-                args: ["{change}.value", "{that}.dom.textEditor"]
+                args: ["{change}.value", "{that}.dom.textEditor"],
+                excludeSource: ["init", "c2lc-programTextEditor-textEditor"]
             }
         },
         selectors: {
@@ -60,7 +59,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     });
 
     c2lc.programTextEditor.updateProgramFromTextarea = function (programTextEditor, textarea) {
-        programTextEditor.applier.change("program", textarea.val().split(" "));
+        programTextEditor.applier.change("program", textarea.val().trim().split(/\s+/),
+            "ADD", "c2lc-programTextEditor-textEditor");
     };
 
     c2lc.programTextEditor.updateTextareaFromProgram = function (program, textarea) {

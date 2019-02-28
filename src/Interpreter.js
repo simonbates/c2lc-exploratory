@@ -39,6 +39,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 args: "{that}"
             }
         },
+        events: {
+            onStart: null
+        },
         modelListeners: {
             program: {
                 func: "{that}.reset"
@@ -52,6 +55,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     c2lc.interpreter.step = function (interpreter) {
         if (interpreter.model.programCounter < interpreter.model.program.length) {
+            if (interpreter.model.programCounter === 0) {
+                interpreter.events.onStart.fire();
+            }
             var action = interpreter.model.program[interpreter.model.programCounter];
             var actionHandler = interpreter.options.actions[action];
             if (actionHandler) {
