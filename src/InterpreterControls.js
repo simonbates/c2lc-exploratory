@@ -24,25 +24,25 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 method: "html",
                 args: ["{that}.options.markup.controls"]
             },
-            "onCreate.registerRestartClickHandler": {
-                priority: "after:renderControls",
-                "this": "{that}.dom.restartButton",
-                method: "click",
-                args: ["{that}.events.onRestart.fire"]
-            },
             "onCreate.registerStepClickHandler": {
                 priority: "after:renderControls",
                 "this": "{that}.dom.stepButton",
                 method: "click",
                 args: ["{that}.events.onStep.fire"]
+            },
+            "onCreate.registerRestartClickHandler": {
+                priority: "after:renderControls",
+                "this": "{that}.dom.restartButton",
+                method: "click",
+                args: ["{that}.events.onRestart.fire"]
             }
         },
         selectors: {
-            restartButton: ".c2lc-interpreterControls-restart",
-            stepButton: ".c2lc-interpreterControls-step"
+            stepButton: ".c2lc-interpreterControls-step",
+            restartButton: ".c2lc-interpreterControls-restart"
         },
         markup: {
-            controls: "<button class='c2lc-interpreterControls-restart'>Restart</button><button class='c2lc-interpreterControls-step'>Step</button>"
+            controls: "<button class='c2lc-interpreterControls-step'>Step</button><button class='c2lc-interpreterControls-restart'>Restart</button>"
         }
     });
 

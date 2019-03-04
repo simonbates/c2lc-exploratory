@@ -31,6 +31,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 method: "html",
                 args: ["{that}.options.markup.textEditor"]
             },
+            "onCreate.connectLabel": {
+                priority: "after:renderTextEditor",
+                funcName: "c2lc.programTextEditor.connectLabel",
+                args: [
+                    "{that}.dom.label",
+                    "{that}.dom.textEditor"
+                ]
+            },
             "onCreate.setInitialTextEditorContents": {
                 priority: "after:renderTextEditor",
                 funcName: "c2lc.programTextEditor.updateTextareaFromProgram",
@@ -51,12 +59,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         selectors: {
+            label: ".c2lc-programTextEditor-label",
             textEditor: ".c2lc-programTextEditor-text"
         },
         markup: {
-            textEditor: "<textarea class='c2lc-programTextEditor-text' cols='40' rows='3'></textarea>"
+            textEditor: "<p><label class='c2lc-programTextEditor-label'>Program:</label></p><p><textarea class='c2lc-programTextEditor-text' cols='40' rows='3'></textarea></p>"
         }
     });
+
+    c2lc.programTextEditor.connectLabel = function (labelElem, textareaElem) {
+        var id = fluid.allocateSimpleId(textareaElem);
+        labelElem.attr("for", id);
+    };
 
     c2lc.programTextEditor.updateProgramFromTextarea = function (programTextEditor, textarea) {
         programTextEditor.applier.change("program", textarea.val().trim().split(/\s+/),

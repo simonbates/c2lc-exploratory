@@ -40,6 +40,19 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             name: "Program Text Editor Tests",
             tests: [
                 {
+                    expect: 2,
+                    name: "Label is connected to textarea",
+                    sequence: [
+                        {
+                            funcName: "c2lc.tests.checkLabelConnectedToTextarea",
+                            args: [
+                                "{programTextEditor}.dom.label",
+                                "{programTextEditor}.dom.textEditor"
+                            ]
+                        }
+                    ]
+                },
+                {
                     expect: 1,
                     name: "Check initial text contents",
                     sequence: [
@@ -96,8 +109,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }]
     });
 
+    c2lc.tests.checkLabelConnectedToTextarea = function (label, textarea) {
+        var textareaId = fluid.getId(textarea);
+        jqUnit.assertTrue("The textarea has a truthy id", textareaId);
+        jqUnit.assertEquals("The label 'for' matches the textarea id",
+            textareaId, label.attr("for"));
+    };
+
     c2lc.tests.checkTextEditorContents = function (expected, textarea) {
-        jqUnit.assertEquals("text editor contents", expected, textarea.val());
+        jqUnit.assertEquals("Text editor contents", expected, textarea.val());
     };
 
     c2lc.tests.setTextEditorContents = function (textarea, text) {

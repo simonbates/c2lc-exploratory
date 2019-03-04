@@ -95,11 +95,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         "onRestart.resetGraphics": {
                             func: "{graphics}.reset"
                         },
-                        "onRestart.resetInterpreter": {
-                            func: "{interpreter}.reset"
-                        },
                         "onStep.stepInterpreter": {
                             func: "{interpreter}.step"
+                        },
+                        "onRestart.resetInterpreter": {
+                            func: "{interpreter}.reset"
                         }
                     }
                 }
