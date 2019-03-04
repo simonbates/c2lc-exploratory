@@ -3,7 +3,7 @@
 }
 
 .c2lc-graphics, .c2lc-textEditor, .c2lc-controls {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
 }
 
 .c2lc-turtleGraphics-drawingArea {
@@ -27,4 +27,8 @@
 
 .c2lc-textEditor textarea {
     font-size: 2rem;
+}
+
+.c2lc-controls button {
+    margin: 0 0.4rem;
 }

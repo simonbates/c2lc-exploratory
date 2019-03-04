@@ -15,6 +15,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.interpreterControls", {
         gradeNames: "fluid.viewComponent",
         events: {
+            onRestart: null,
             onStep: null
         },
         listeners: {
@@ -22,6 +23,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 "this": "{that}.container",
                 method: "html",
                 args: ["{that}.options.markup.controls"]
+            },
+            "onCreate.registerRestartClickHandler": {
+                priority: "after:renderControls",
+                "this": "{that}.dom.restartButton",
+                method: "click",
+                args: ["{that}.events.onRestart.fire"]
             },
             "onCreate.registerStepClickHandler": {
                 priority: "after:renderControls",
@@ -31,10 +38,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         selectors: {
+            restartButton: ".c2lc-interpreterControls-restart",
             stepButton: ".c2lc-interpreterControls-step"
         },
         markup: {
-            controls: "<button class='c2lc-interpreterControls-step'>Step</button>"
+            controls: "<button class='c2lc-interpreterControls-restart'>Restart</button><button class='c2lc-interpreterControls-step'>Step</button>"
         }
     });
 
