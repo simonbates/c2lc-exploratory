@@ -92,14 +92,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 container: "{app}.options.controlsContainer",
                 options: {
                     listeners: {
-                        "onRestart.resetGraphics": {
-                            func: "{graphics}.reset"
-                        },
                         "onStep.stepInterpreter": {
                             func: "{interpreter}.step"
                         },
                         "onRestart.resetInterpreter": {
                             func: "{interpreter}.reset"
+                        },
+                        "onRestart.resetGraphics": {
+                            func: "{graphics}.reset"
                         }
                     }
                 }

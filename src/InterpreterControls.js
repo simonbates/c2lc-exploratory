@@ -15,8 +15,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.interpreterControls", {
         gradeNames: "fluid.viewComponent",
         events: {
-            onRestart: null,
-            onStep: null
+            onStep: null,
+            onRestart: null
         },
         listeners: {
             "onCreate.renderControls": {
