@@ -78,15 +78,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 type: "c2lc.turtleGraphics",
                 container: "{app}.options.graphicsContainer"
             },
-            textEditor: {
-                type: "c2lc.programTextEditor",
-                container: "{app}.options.textEditorContainer",
-                options: {
-                    model: {
-                        program: "{app}.model.program"
-                    }
-                }
-            },
             controls: {
                 type: "c2lc.interpreterControls",
                 container: "{app}.options.controlsContainer",
@@ -101,6 +92,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         "onRestart.resetGraphics": {
                             func: "{graphics}.reset"
                         }
+                    }
+                }
+            },
+            textEditor: {
+                type: "c2lc.programTextEditor",
+                container: "{app}.options.textEditorContainer",
+                options: {
+                    model: {
+                        program: "{app}.model.program"
                     }
                 }
             }

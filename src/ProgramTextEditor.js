@@ -63,7 +63,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             textEditor: ".c2lc-programTextEditor-text"
         },
         markup: {
-            textEditor: "<p><label class='c2lc-programTextEditor-label'>Program:</label></p><p><textarea class='c2lc-programTextEditor-text' cols='40' rows='3'></textarea></p>"
+            textEditor: "<label class='c2lc-programTextEditor-label'>Program:</label><textarea class='c2lc-programTextEditor-text' cols='40' rows='4'></textarea>"
         }
     });
 
