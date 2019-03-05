@@ -73,12 +73,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.programTextEditor.updateProgramFromTextarea = function (programTextEditor, textarea) {
-        programTextEditor.applier.change("program", textarea.val().trim().split(/\s+/),
+        programTextEditor.applier.change("program",
+            c2lc.textSyntax.read(textarea.val()),
             "ADD", "c2lc-programTextEditor-textEditor");
     };
 
     c2lc.programTextEditor.updateTextareaFromProgram = function (program, textarea) {
-        textarea.val(program.join(" "));
+        textarea.val(c2lc.textSyntax.print(program));
     };
 
 })();

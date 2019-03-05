@@ -12,32 +12,28 @@
         <script src="src/Math.js"></script>
         <script src="src/TurtleGraphics.js"></script>
         <script src="src/InterpreterControls.js"></script>
+        <script src="src/TextSyntax.js"></script>
         <script src="src/ProgramTextEditor.js"></script>
         <script src="src/App.js"></script>
     </head>
     <body>
-        <div class="c2lc-container">
-            <div class="c2lc-graphics"></div>
-            <div class="c2lc-textEditor"></div>
-            <div class="c2lc-controls"></div>
+        <div class="c2lc-graphics"></div>
+        <div class="c2lc-textEditor"></div>
+        <div class="c2lc-instructions">
+            <p>Actions: forward, left, right. Actions are separated by spaces.<br>
+            Example: <a class="c2lc-example" href="#">forward left forward left forward left forward</a></p>
         </div>
+        <div class="c2lc-controls"></div>
         <script>
             $(document).ready(function () {
-                c2lc.app({
+                var app = c2lc.app({
                     graphicsContainer: ".c2lc-graphics",
                     textEditorContainer: ".c2lc-textEditor",
-                    controlsContainer: ".c2lc-controls",
-                    model: {
-                        program: [
-                            "forward",
-                            "left",
-                            "forward",
-                            "left",
-                            "forward",
-                            "left",
-                            "forward"
-                        ]
-                    }
+                    controlsContainer: ".c2lc-controls"
+                });
+                $(".c2lc-example").click(function (event) {
+                    event.preventDefault();
+                    app.applier.change("program", c2lc.textSyntax.read($(event.target).text()));
                 });
             });
         </script>
