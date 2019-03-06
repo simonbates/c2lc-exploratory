@@ -25,6 +25,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 options: {
                     model: {
                         program: ["foo", "bar", "baz"]
+                    },
+                    components: {
+                        syntax: {
+                            type: "c2lc.textSyntax"
+                        }
                     }
                 }
             },

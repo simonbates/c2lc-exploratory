@@ -12,16 +12,30 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     "use strict";
 
-    var textSyntax = fluid.registerNamespace("c2lc.textSyntax");
+    var c2lc = fluid.registerNamespace("c2lc");
 
-    textSyntax.read = function (text) {
+    fluid.defaults("c2lc.textSyntax", {
+        gradeNames: "fluid.component",
+        invokers: {
+            read: {
+                funcName: "c2lc.textSyntax.read",
+                args: ["{arguments}.0"] // text
+            },
+            print: {
+                funcName: "c2lc.textSyntax.print",
+                args: ["{arguments}.0"] // program
+            }
+        }
+    });
+
+    c2lc.textSyntax.read = function (text) {
         if (text.trim().length === 0) {
             return [];
         }
         return text.trim().split(/\s+/);
     };
 
-    textSyntax.print = function (program) {
+    c2lc.textSyntax.print = function (program) {
         return program.join(" ");
     };
 

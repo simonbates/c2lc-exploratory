@@ -95,12 +95,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     }
                 }
             },
+            textEditorSyntax: {
+                type: "c2lc.textSyntax"
+            },
             textEditor: {
                 type: "c2lc.programTextEditor",
                 container: "{app}.options.textEditorContainer",
                 options: {
                     model: {
                         program: "{app}.model.program"
+                    },
+                    components: {
+                        syntax: "{textEditorSyntax}"
                     }
                 }
             }

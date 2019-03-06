@@ -19,10 +19,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         model: {
             program: []
         },
+        components: {
+            syntax: null // To be provided
+        },
         invokers: {
             updateProgramFromTextarea: {
                 funcName: "c2lc.programTextEditor.updateProgramFromTextarea",
-                args: ["{that}", "{that}.dom.textEditor"]
+                args: ["{that}", "{that}.dom.textEditor", "{syntax}"]
             }
         },
         listeners: {
@@ -42,7 +45,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             "onCreate.setInitialTextEditorContents": {
                 priority: "after:renderTextEditor",
                 funcName: "c2lc.programTextEditor.updateTextareaFromProgram",
-                args: ["{that}.model.program", "{that}.dom.textEditor"]
+                args: [
+                    "{that}.model.program",
+                    "{that}.dom.textEditor",
+                    "{syntax}"
+                ]
             },
             "onCreate.registerChangeHandler": {
                 priority: "after:renderTextEditor",
@@ -54,7 +61,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         modelListeners: {
             program: {
                 funcName: "c2lc.programTextEditor.updateTextareaFromProgram",
-                args: ["{change}.value", "{that}.dom.textEditor"],
+                args: [
+                    "{change}.value",
+                    "{that}.dom.textEditor",
+                    "{syntax}"
+                ],
                 excludeSource: ["init", "c2lc-programTextEditor-textEditor"]
             }
         },
@@ -72,14 +83,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         labelElem.attr("for", id);
     };
 
-    c2lc.programTextEditor.updateProgramFromTextarea = function (programTextEditor, textarea) {
+    c2lc.programTextEditor.updateProgramFromTextarea = function (programTextEditor, textarea, syntax) {
         programTextEditor.applier.change("program",
-            c2lc.textSyntax.read(textarea.val()),
+            syntax.read(textarea.val()),
             "ADD", "c2lc-programTextEditor-textEditor");
     };
 
-    c2lc.programTextEditor.updateTextareaFromProgram = function (program, textarea) {
-        textarea.val(c2lc.textSyntax.print(program));
+    c2lc.programTextEditor.updateTextareaFromProgram = function (program, textarea, syntax) {
+        textarea.val(syntax.print(program));
     };
 
 })();

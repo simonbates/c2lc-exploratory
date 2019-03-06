@@ -20,25 +20,27 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     jqUnit.test("Read", function () {
         jqUnit.expect(4);
-        jqUnit.assertDeepEq("Empty string", [], c2lc.textSyntax.read(""));
-        jqUnit.assertDeepEq("Single word", ["foo"], c2lc.textSyntax.read("foo"));
+        var syntax = c2lc.textSyntax();
+        jqUnit.assertDeepEq("Empty string", [], syntax.read(""));
+        jqUnit.assertDeepEq("Single word", ["foo"], syntax.read("foo"));
         jqUnit.assertDeepEq("Single word with whitespace",
             ["foo"],
-            c2lc.textSyntax.read("  foo  "));
+            syntax.read("  foo  "));
         jqUnit.assertDeepEq("Multiple words",
             ["foo", "bar", "baz"],
-            c2lc.textSyntax.read(" foo  bar   baz "));
+            syntax.read(" foo  bar   baz "));
     });
 
     jqUnit.test("Print", function () {
         jqUnit.expect(3);
-        jqUnit.assertEquals("Empty program", "", c2lc.textSyntax.print([]));
+        var syntax = c2lc.textSyntax();
+        jqUnit.assertEquals("Empty program", "", syntax.print([]));
         jqUnit.assertEquals("Single action",
             "foo",
-            c2lc.textSyntax.print(["foo"]));
+            syntax.print(["foo"]));
         jqUnit.assertEquals("Multiple actions",
             "foo bar baz",
-            c2lc.textSyntax.print(["foo", "bar", "baz"]));
+            syntax.print(["foo", "bar", "baz"]));
     });
 
 })();

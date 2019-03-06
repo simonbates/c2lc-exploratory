@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>C2LC</title>
+        <title>C2LC Prototype</title>
 
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link href="c2lc.css" rel="stylesheet">
@@ -42,9 +42,10 @@
                     textEditorContainer: ".c2lc-textEditor",
                     controlsContainer: ".c2lc-controls"
                 });
+                var syntax = c2lc.textSyntax();
                 $(".c2lc-example").click(function (event) {
                     event.preventDefault();
-                    app.applier.change("program", c2lc.textSyntax.read($(event.target).text()));
+                    app.applier.change("program", syntax.read($(event.target).text()));
                 });
             });
         </script>
