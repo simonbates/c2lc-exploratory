@@ -23,7 +23,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 type: "c2lc.turtleGraphics",
                 container: ".c2lc-graphics"
             },
-            catTester: {
+            turtleGraphicsTester: {
                 type: "c2lc.tests.turtleGraphicsTester"
             }
         }

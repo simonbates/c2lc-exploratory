@@ -24,6 +24,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             directionDegrees: 0 // 0 is North, 90 is East
         },
         invokers: {
+            reset: {
+                funcName: "c2lc.turtleGraphics.reset",
+                args: ["{that}", "{that}.dom.linesContainer"]
+            },
             forward: {
                 funcName: "c2lc.turtleGraphics.forward",
                 args: [
@@ -80,9 +84,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             linesContainer: ".c2lc-turtleGraphics-lines"
         },
         markup: {
-            drawingArea: "<span role='img' aria-label='Drawing area'><svg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'><g class='c2lc-turtleGraphics-lines'/><polygon class='c2lc-turtleGraphics-turtle' points='-6 4 6 4 0 -9'/></svg></span>"
+            drawingArea: "<span role='img' class='c2lc-turtleGraphics-drawingArea' aria-label='Drawing area'><svg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'><g class='c2lc-turtleGraphics-lines'/><polygon class='c2lc-turtleGraphics-turtle' points='-6 4 6 4 0 -9'/></svg></span>"
         }
     });
+
+    c2lc.turtleGraphics.reset = function (turtleGraphics, linesContainer) {
+        turtleGraphics.applier.change("location", {
+            x: 0,
+            y: 0
+        });
+        turtleGraphics.applier.change("directionDegrees", 0);
+        linesContainer.empty();
+    };
 
     c2lc.turtleGraphics.forward = function (turtleGraphics, distance) {
         var directionRadians = c2lc.math.degrees2radians(turtleGraphics.model.directionDegrees);

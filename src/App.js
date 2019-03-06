@@ -16,6 +16,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         gradeNames: "fluid.modelComponent",
         graphicsContainer: null, // To be provided
         controlsContainer: null, // To be provided
+        textEditorContainer: null, // To be provided
         model: {
             program: []
         },
@@ -65,6 +66,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                 }
                             }
                         }
+                    },
+                    listeners: {
+                        "onStart.resetGraphics": {
+                            func: "{graphics}.reset"
+                        }
                     }
                 }
             },
@@ -79,7 +85,28 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     listeners: {
                         "onStep.stepInterpreter": {
                             func: "{interpreter}.step"
+                        },
+                        "onRestart.resetInterpreter": {
+                            func: "{interpreter}.reset"
+                        },
+                        "onRestart.resetGraphics": {
+                            func: "{graphics}.reset"
                         }
+                    }
+                }
+            },
+            textEditorSyntax: {
+                type: "c2lc.textSyntax"
+            },
+            textEditor: {
+                type: "c2lc.programTextEditor",
+                container: "{app}.options.textEditorContainer",
+                options: {
+                    model: {
+                        program: "{app}.model.program"
+                    },
+                    components: {
+                        syntax: "{textEditorSyntax}"
                     }
                 }
             }

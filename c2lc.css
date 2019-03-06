@@ -1,27 +1,91 @@
-.c2lc-container {
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+a, a:visited {
+    color: blue;
+}
+
+h1 {
     text-align: center;
 }
 
-.c2lc-graphics {
-    margin: 1rem 0;
-    border: 3px solid #555;
-    border-radius: 4%;
-    display: inline-block;
+.c2lc-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.c2lc-graphics svg {
-    width: 32rem;
-    height: 32rem;
+.c2lc-container > * {
+    margin: 1.5rem 1.5rem 0 1.5rem;
+}
+
+.c2lc-graphics {
+    width: 30rem;
+    height: 30rem;
+}
+
+.c2lc-turtleGraphics-drawingArea {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 0.15rem solid #555;
+    border-radius: 4%;
+}
+
+.c2lc-turtleGraphics-drawingArea svg {
+    width: 100%;
+    height: 100%;
     stroke: #222;
     stroke-width: 3;
     stroke-linecap: round;
 }
 
 .c2lc-turtleGraphics-turtle {
-    fill: #2ae;
+    fill: #2BB673;
     stroke-width: 0.3;
 }
 
+.c2lc-textEditor {
+    width: 30rem;
+}
+
+.c2lc-textEditor textarea {
+    font-family: inherit;
+    font-size: 1.8rem;
+    line-height: 1.4;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0.5rem 0 1rem 0;
+    width: 100%;
+    border: 0.1rem solid #555;
+    padding: 0.3em;
+    color: #222;
+    background: #F2F2F2;
+}
+
+.c2lc-instructions {
+    width: 30rem;
+    line-height: 1.3;
+}
+
 .c2lc-controls {
-    margin: 1rem 0;
+    margin-top: 2rem;
+}
+
+.c2lc-controls button {
+    font-family: inherit;
+    font-size: 1.7rem;
+    margin-right: 1.2rem;
+    border: 0.1rem solid #555;
+    padding: 0.3em;
+    color: #222;
+    background: #FFDA4E;
+}
+
+.c2lc-examples {
+    margin-top: 3rem;
+    text-align: center;
 }
