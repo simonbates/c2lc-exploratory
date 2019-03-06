@@ -15,8 +15,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.app", {
         gradeNames: "fluid.modelComponent",
         graphicsContainer: null, // To be provided
-        textEditorContainer: null, // To be provided
         controlsContainer: null, // To be provided
+        textEditorContainer: null, // To be provided
         model: {
             program: []
         },
