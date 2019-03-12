@@ -12,6 +12,65 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     "use strict";
 
+    var c2lc = fluid.registerNamespace("c2lc");
+
+    fluid.defaults("c2lc.actions.forward", {
+        gradeNames: "c2lc.actionHandler",
+        components: {
+            turtleGraphics: null, // To be provided
+            dashConnector: null // To be provided
+        },
+        invokers: {
+            handleAction: {
+                funcName: "c2lc.actions.forward.handleAction",
+                args: ["{turtleGraphics}", "{dashConnector}"]
+            }
+        }
+    });
+
+    c2lc.actions.forward.handleAction = function (turtleGraphics, dashConnector) {
+        turtleGraphics.forward(40);
+        dashConnector.forward();
+    };
+
+    fluid.defaults("c2lc.actions.left", {
+        gradeNames: "c2lc.actionHandler",
+        components: {
+            turtleGraphics: null, // To be provided
+            dashConnector: null // To be provided
+        },
+        invokers: {
+            handleAction: {
+                funcName: "c2lc.actions.left.handleAction",
+                args: ["{turtleGraphics}", "{dashConnector}"]
+            }
+        }
+    });
+
+    c2lc.actions.left.handleAction = function (turtleGraphics, dashConnector) {
+        turtleGraphics.left(90);
+        dashConnector.left();
+    };
+
+    fluid.defaults("c2lc.actions.right", {
+        gradeNames: "c2lc.actionHandler",
+        components: {
+            turtleGraphics: null, // To be provided
+            dashConnector: null // To be provided
+        },
+        invokers: {
+            handleAction: {
+                funcName: "c2lc.actions.right.handleAction",
+                args: ["{turtleGraphics}", "{dashConnector}"]
+            }
+        }
+    });
+
+    c2lc.actions.right.handleAction = function (turtleGraphics, dashConnector) {
+        turtleGraphics.right(90);
+        dashConnector.right();
+    };
+
     fluid.defaults("c2lc.app", {
         gradeNames: "fluid.modelComponent",
         graphicsContainer: null, // To be provided
@@ -35,35 +94,29 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         forwardHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.actions.forward",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.graphics.forward",
-                                        args: [ 40 ]
-                                    }
+                                components: {
+                                    turtleGraphics: "{app}.graphics",
+                                    dashConnector: "{app}.dashConnector"
                                 }
                             }
                         },
                         leftHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.actions.left",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.graphics.left",
-                                        args: [ 90 ]
-                                    }
+                                components: {
+                                    turtleGraphics: "{app}.graphics",
+                                    dashConnector: "{app}.dashConnector"
                                 }
                             }
                         },
                         rightHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.actions.right",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.graphics.right",
-                                        args: [ 90 ]
-                                    }
+                                components: {
+                                    turtleGraphics: "{app}.graphics",
+                                    dashConnector: "{app}.dashConnector"
                                 }
                             }
                         }

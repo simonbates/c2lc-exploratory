@@ -12,7 +12,7 @@ h1 {
 
 button {
     border: 0.1rem solid #555;
-    padding: 0.3em;
+    padding: 0.4em;
     color: #222;
 }
 
@@ -85,7 +85,8 @@ button {
     font-family: inherit;
     font-size: inherit;
     margin-right: 0.5rem;
-    background: #AEF;
+    background: #90EAF8;
+    color: #000;
 }
 
 .c2lc-controls {

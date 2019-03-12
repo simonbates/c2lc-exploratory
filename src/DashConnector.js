@@ -51,6 +51,51 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 "this": "{that}.charCommand",
                 method: "writeValue",
                 args: [new Uint8Array([0x03, 0x00, 0x00, 0xff])]
+            },
+            forward: {
+                "this": "{that}.charCommand",
+                method: "writeValue",
+                args: [new Uint8Array([
+                    0x23,
+                    0xC8,
+                    0x00,
+                    0x00,
+                    0x03,
+                    0xE8,
+                    0x00,
+                    0x00,
+                    0x80
+                ])]
+            },
+            left: {
+                "this": "{that}.charCommand",
+                method: "writeValue",
+                args: [new Uint8Array([
+                    0x23,
+                    0x00,
+                    0x00,
+                    0x9D,
+                    0x03,
+                    0xE8,
+                    0x00,
+                    0x00,
+                    0x80
+                ])]
+            },
+            right: {
+                "this": "{that}.charCommand",
+                method: "writeValue",
+                args: [new Uint8Array([
+                    0x23,
+                    0x00,
+                    0x00,
+                    0x63,
+                    0x03,
+                    0xE8,
+                    0xC0,
+                    0xC0,
+                    0x80
+                ])]
             }
         }
     });
