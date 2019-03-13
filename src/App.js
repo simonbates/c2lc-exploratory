@@ -18,57 +18,57 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         gradeNames: "c2lc.actionHandler",
         components: {
             turtleGraphics: null, // To be provided
-            dashConnector: null // To be provided
+            dashDriver: null // To be provided
         },
         invokers: {
             handleAction: {
                 funcName: "c2lc.actions.forward.handleAction",
-                args: ["{turtleGraphics}", "{dashConnector}"]
+                args: ["{turtleGraphics}", "{dashDriver}"]
             }
         }
     });
 
-    c2lc.actions.forward.handleAction = function (turtleGraphics, dashConnector) {
+    c2lc.actions.forward.handleAction = function (turtleGraphics, dashDriver) {
         turtleGraphics.forward(40);
-        dashConnector.forward();
+        dashDriver.forward();
     };
 
     fluid.defaults("c2lc.actions.left", {
         gradeNames: "c2lc.actionHandler",
         components: {
             turtleGraphics: null, // To be provided
-            dashConnector: null // To be provided
+            dashDriver: null // To be provided
         },
         invokers: {
             handleAction: {
                 funcName: "c2lc.actions.left.handleAction",
-                args: ["{turtleGraphics}", "{dashConnector}"]
+                args: ["{turtleGraphics}", "{dashDriver}"]
             }
         }
     });
 
-    c2lc.actions.left.handleAction = function (turtleGraphics, dashConnector) {
+    c2lc.actions.left.handleAction = function (turtleGraphics, dashDriver) {
         turtleGraphics.left(90);
-        dashConnector.left();
+        dashDriver.left();
     };
 
     fluid.defaults("c2lc.actions.right", {
         gradeNames: "c2lc.actionHandler",
         components: {
             turtleGraphics: null, // To be provided
-            dashConnector: null // To be provided
+            dashDriver: null // To be provided
         },
         invokers: {
             handleAction: {
                 funcName: "c2lc.actions.right.handleAction",
-                args: ["{turtleGraphics}", "{dashConnector}"]
+                args: ["{turtleGraphics}", "{dashDriver}"]
             }
         }
     });
 
-    c2lc.actions.right.handleAction = function (turtleGraphics, dashConnector) {
+    c2lc.actions.right.handleAction = function (turtleGraphics, dashDriver) {
         turtleGraphics.right(90);
-        dashConnector.right();
+        dashDriver.right();
     };
 
     fluid.defaults("c2lc.app", {
@@ -98,7 +98,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 components: {
                                     turtleGraphics: "{app}.graphics",
-                                    dashConnector: "{app}.dashConnector"
+                                    dashDriver: "{app}.dashDriver"
                                 }
                             }
                         },
@@ -107,7 +107,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 components: {
                                     turtleGraphics: "{app}.graphics",
-                                    dashConnector: "{app}.dashConnector"
+                                    dashDriver: "{app}.dashDriver"
                                 }
                             }
                         },
@@ -116,7 +116,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 components: {
                                     turtleGraphics: "{app}.graphics",
-                                    dashConnector: "{app}.dashConnector"
+                                    dashDriver: "{app}.dashDriver"
                                 }
                             }
                         }
@@ -164,19 +164,19 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     }
                 }
             },
-            dashConnector: {
-                type: "c2lc.dashConnector"
+            dashDriver: {
+                type: "c2lc.dashDriver"
             },
             dashConnectControls: {
                 type: "c2lc.dashConnectControls",
                 container: "{app}.options.dashConnectControlsContainer",
                 options: {
                     model: {
-                        connectionState: "{dashConnector}.model.connectionState"
+                        connectionState: "{dashDriver}.model.connectionState"
                     },
                     listeners: {
                         "onInitiateConnect.connectToDash": {
-                            func: "{dashConnector}.connect"
+                            func: "{dashDriver}.connect"
                         }
                     }
                 }
