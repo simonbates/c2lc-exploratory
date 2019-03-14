@@ -72,6 +72,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }).then(function (characteristic) {
             dashDriver.charCommand = characteristic;
             applier.change("connectionState", "connected");
+        }).catch(function () { // eslint-disable-line dot-notation
+            applier.change("connectionState", "notConnected");
         });
     };
 
