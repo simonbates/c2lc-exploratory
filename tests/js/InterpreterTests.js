@@ -108,4 +108,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }
     });
 
+    // TODO: Test an action with a list of handlers
+
 })();

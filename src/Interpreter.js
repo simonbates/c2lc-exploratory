@@ -59,13 +59,23 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 interpreter.events.onStart.fire();
             }
             var action = interpreter.model.program[interpreter.model.programCounter];
-            var actionHandler = interpreter.options.actions[action];
-            if (actionHandler) {
-                actionHandler.handleAction(interpreter);
+            var actionHandlerSpec = interpreter.options.actions[action];
+            if (actionHandlerSpec) {
+                c2lc.interpreter.doAction(interpreter, actionHandlerSpec);
                 interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
             } else {
                 throw new Error("Unknown action: " + action);
             }
+        }
+    };
+
+    c2lc.interpreter.doAction = function (interpreter, actionHandlerSpec) {
+        if (fluid.isArrayable(actionHandlerSpec)) {
+            fluid.each(actionHandlerSpec, function (actionHandler) {
+                actionHandler.handleAction(interpreter);
+            });
+        } else {
+            actionHandlerSpec.handleAction(interpreter);
         }
     };
 
