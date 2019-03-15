@@ -12,65 +12,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     "use strict";
 
-    var c2lc = fluid.registerNamespace("c2lc");
-
-    fluid.defaults("c2lc.actions.forward", {
-        gradeNames: "c2lc.actionHandler",
-        components: {
-            turtleGraphics: null, // To be provided
-            dashDriver: null // To be provided
-        },
-        invokers: {
-            handleAction: {
-                funcName: "c2lc.actions.forward.handleAction",
-                args: ["{turtleGraphics}", "{dashDriver}"]
-            }
-        }
-    });
-
-    c2lc.actions.forward.handleAction = function (turtleGraphics, dashDriver) {
-        turtleGraphics.forward(40);
-        dashDriver.forward();
-    };
-
-    fluid.defaults("c2lc.actions.left", {
-        gradeNames: "c2lc.actionHandler",
-        components: {
-            turtleGraphics: null, // To be provided
-            dashDriver: null // To be provided
-        },
-        invokers: {
-            handleAction: {
-                funcName: "c2lc.actions.left.handleAction",
-                args: ["{turtleGraphics}", "{dashDriver}"]
-            }
-        }
-    });
-
-    c2lc.actions.left.handleAction = function (turtleGraphics, dashDriver) {
-        turtleGraphics.left(90);
-        dashDriver.left();
-    };
-
-    fluid.defaults("c2lc.actions.right", {
-        gradeNames: "c2lc.actionHandler",
-        components: {
-            turtleGraphics: null, // To be provided
-            dashDriver: null // To be provided
-        },
-        invokers: {
-            handleAction: {
-                funcName: "c2lc.actions.right.handleAction",
-                args: ["{turtleGraphics}", "{dashDriver}"]
-            }
-        }
-    });
-
-    c2lc.actions.right.handleAction = function (turtleGraphics, dashDriver) {
-        turtleGraphics.right(90);
-        dashDriver.right();
-    };
-
     fluid.defaults("c2lc.app", {
         gradeNames: "fluid.modelComponent",
         graphicsContainer: null, // To be provided
@@ -88,34 +29,76 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         program: "{app}.model.program"
                     },
                     actions: {
-                        forward: "{that}.forwardHandler",
-                        left: "{that}.leftHandler",
-                        right: "{that}.rightHandler"
+                        forward: [
+                            "{that}.turtleForwardHandler",
+                            "{that}.dashForwardHandler"
+                        ],
+                        left: [
+                            "{that}.turtleLeftHandler",
+                            "{that}.dashLeftHandler"
+                        ],
+                        right: [
+                            "{that}.turtleRightHandler",
+                            "{that}.dashRightHandler"
+                        ]
                     },
                     components: {
-                        forwardHandler: {
-                            type: "c2lc.actions.forward",
+                        turtleForwardHandler: {
+                            type: "c2lc.actionHandler",
                             options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.forward",
+                                        args: [ 40 ]
+                                    }
+                                }
+                            }
+                        },
+                        turtleLeftHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.left",
+                                        args: [ 90 ]
+                                    }
+                                }
+                            }
+                        },
+                        turtleRightHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.right",
+                                        args: [ 90 ]
+                                    }
+                                }
+                            }
+                        },
+                        dashForwardHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "forward",
                                 components: {
-                                    turtleGraphics: "{app}.graphics",
                                     dashDriver: "{app}.dashDriver"
                                 }
                             }
                         },
-                        leftHandler: {
-                            type: "c2lc.actions.left",
+                        dashLeftHandler: {
+                            type: "c2lc.dashActionHandler",
                             options: {
+                                operation: "left",
                                 components: {
-                                    turtleGraphics: "{app}.graphics",
                                     dashDriver: "{app}.dashDriver"
                                 }
                             }
                         },
-                        rightHandler: {
-                            type: "c2lc.actions.right",
+                        dashRightHandler: {
+                            type: "c2lc.dashActionHandler",
                             options: {
+                                operation: "right",
                                 components: {
-                                    turtleGraphics: "{app}.graphics",
                                     dashDriver: "{app}.dashDriver"
                                 }
                             }
