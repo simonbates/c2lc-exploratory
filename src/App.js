@@ -29,18 +29,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         program: "{app}.model.program"
                     },
                     actions: {
-                        forward: [
-                            "{that}.turtleForwardHandler",
-                            "{that}.dashForwardHandler"
-                        ],
-                        left: [
-                            "{that}.turtleLeftHandler",
-                            "{that}.dashLeftHandler"
-                        ],
-                        right: [
-                            "{that}.turtleRightHandler",
-                            "{that}.dashRightHandler"
-                        ]
+                        "forward.turtle": "{that}.turtleForwardHandler",
+                        "forward.dash": "{that}.dashForwardHandler",
+                        "left.turtle": "{that}.turtleLeftHandler",
+                        "left.dash": "{that}.dashLeftHandler",
+                        "right.turtle": "{that}.turtleRightHandler",
+                        "right.dash": "{that}.dashRightHandler"
                     },
                     components: {
                         turtleForwardHandler: {

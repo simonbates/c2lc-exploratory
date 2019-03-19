@@ -33,6 +33,34 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     jqUnit.module("Interpreter Tests");
 
+    jqUnit.test("c2lc.interpreter.parseActionKey", function () {
+        jqUnit.expect(4);
+
+        jqUnit.assertDeepEq("Non-namespaced action name", {
+            actionName: "foo",
+            namespace: undefined
+        }, c2lc.interpreter.parseActionKey("foo"));
+
+        jqUnit.assertDeepEq("Namespaced action", {
+            actionName: "foo",
+            namespace: "bar"
+        }, c2lc.interpreter.parseActionKey("foo.bar"));
+
+        try {
+            c2lc.interpreter.parseActionKey("");
+            jqUnit.fail("Exception should have been thrown");
+        } catch (e) {
+            jqUnit.assertEquals("Empty action key", "Empty action key not allowed", e.message);
+        }
+
+        try {
+            c2lc.interpreter.parseActionKey("foo.bar.baz");
+            jqUnit.fail("Exception should have been thrown");
+        } catch (e) {
+            jqUnit.assertEquals("Too many identifiers", "Bad action key: foo.bar.baz", e.message);
+        }
+    });
+
     jqUnit.test("Default interpreter has an empty program", function () {
         jqUnit.expect(2);
         var interpreter = c2lc.interpreter();
@@ -91,6 +119,44 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("Program counter remains at 2 after step at end of program", 2, interpreter.model.programCounter);
     });
 
+    jqUnit.test("Step a program with 2 actionHandlers", function () {
+        jqUnit.expect(6);
+
+        var interpreter = c2lc.interpreter({
+            model: {
+                program: ["increment"],
+                x: 10,
+                y: 20
+            },
+            actions: {
+                "increment.x": "{that}.incrementXHandler",
+                "increment.y": "{that}.incrementYHandler"
+            },
+            components: {
+                incrementXHandler: {
+                    type: "c2lc.actions.increment",
+                    options: {
+                        modelPath: "x"
+                    }
+                },
+                incrementYHandler: {
+                    type: "c2lc.actions.increment",
+                    options: {
+                        modelPath: "y"
+                    }
+                }
+            }
+        });
+
+        jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
+        jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
+        jqUnit.assertEquals("y is initially 20", 20, interpreter.model.y);
+        interpreter.step();
+        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+        jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
+    });
+
     jqUnit.test("Step a program with an unknown action", function () {
         jqUnit.expect(1);
 
@@ -107,7 +173,5 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             jqUnit.assertEquals("Exception expected", "Unknown action: unknown-action", e.message);
         }
     });
-
-    // TODO: Test an action with a list of handlers
 
 })();

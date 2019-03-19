@@ -59,24 +59,53 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 interpreter.events.onStart.fire();
             }
             var action = interpreter.model.program[interpreter.model.programCounter];
-            var actionHandlerSpec = interpreter.options.actions[action];
-            if (actionHandlerSpec) {
-                c2lc.interpreter.doAction(interpreter, actionHandlerSpec);
-                interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
-            } else {
+            var actionHandlers = c2lc.interpreter.lookUpActionHandlers(interpreter, action);
+            if (actionHandlers.length === 0) {
                 throw new Error("Unknown action: " + action);
+            } else {
+                c2lc.interpreter.callActionHandlers(interpreter, actionHandlers);
+                interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
             }
         }
     };
 
-    c2lc.interpreter.doAction = function (interpreter, actionHandlerSpec) {
-        if (fluid.isArrayable(actionHandlerSpec)) {
-            fluid.each(actionHandlerSpec, function (actionHandler) {
-                actionHandler.handleAction(interpreter);
-            });
-        } else {
-            actionHandlerSpec.handleAction(interpreter);
+    c2lc.interpreter.lookUpActionHandlers = function (interpreter, action) {
+        // Simple linear search, we can change to something faster if needed
+        var actionHandlers = [];
+        fluid.each(interpreter.options.actions, function (actionHandler, actionKey) {
+            if (c2lc.interpreter.parseActionKey(actionKey).actionName === action) {
+                actionHandlers.push(actionHandler);
+            }
+        });
+        return actionHandlers;
+    };
+
+    c2lc.interpreter.parseActionKey = function (actionKey) {
+        if (actionKey.trim().length === 0) {
+            throw new Error("Empty action key not allowed");
         }
+
+        var parts = actionKey.trim().split(".");
+
+        if (parts.length === 1) {
+            return {
+                actionName: parts[0],
+                namespace: undefined
+            };
+        } else if (parts.length === 2) {
+            return {
+                actionName: parts[0],
+                namespace: parts[1]
+            };
+        }
+
+        throw new Error("Bad action key: " + actionKey);
+    };
+
+    c2lc.interpreter.callActionHandlers = function (interpreter, actionHandlers) {
+        fluid.each(actionHandlers, function (actionHandler) {
+            actionHandler.handleAction(interpreter);
+        });
     };
 
 })();
