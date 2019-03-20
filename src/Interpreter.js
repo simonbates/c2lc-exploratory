@@ -70,7 +70,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.interpreter.lookUpActionHandlers = function (interpreter, action) {
-        // Simple linear search, we can change to something faster if needed
+        // Do a simple linear search through options.actions.
+        // We can change to something faster if needed (such as processing
+        // options.actions at onCreate and building a structure optimized for
+        // lookup). If I process options.actions at onCreate I could also catch
+        // bad action keys sooner.
         var actionHandlers = [];
         fluid.each(interpreter.options.actions, function (actionHandler, actionKey) {
             if (c2lc.interpreter.parseActionKey(actionKey).actionName === action) {
