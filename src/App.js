@@ -129,9 +129,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             interpreter: {
                 options: {
                     actions: {
-                        "forward.turtle": "{that}.turtleForwardHandler",
-                        "left.turtle": "{that}.turtleLeftHandler",
-                        "right.turtle": "{that}.turtleRightHandler"
+                        "forward.dash": "{that}.dashForwardHandler",
+                        "left.dash": "{that}.dashLeftHandler",
+                        "right.dash": "{that}.dashRightHandler"
                     },
                     components: {
                         dashForwardHandler: {
