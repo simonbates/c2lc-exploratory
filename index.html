@@ -8,6 +8,7 @@
         <link href="c2lc.css" rel="stylesheet">
 
         <script src="node_modules/infusion/dist/infusion-all.js"></script>
+        <script src="src/FeatureDetection.js"></script>
         <script src="src/Interpreter.js"></script>
         <script src="src/Math.js"></script>
         <script src="src/TurtleGraphics.js"></script>
@@ -41,6 +42,9 @@
         </div>
         <script>
             $(document).ready(function () {
+                fluid.contextAware.makeChecks({
+                    "c2lc.bluetoothApiIsAvailable": "c2lc.bluetoothApiIsAvailable"
+                });
                 var app = c2lc.app({
                     graphicsContainer: ".c2lc-graphics",
                     controlsContainer: ".c2lc-controls",

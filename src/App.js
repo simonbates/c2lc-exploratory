@@ -13,13 +13,23 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     "use strict";
 
     fluid.defaults("c2lc.app", {
-        gradeNames: "fluid.modelComponent",
+        gradeNames: ["fluid.modelComponent", "fluid.contextAware"],
         graphicsContainer: null, // To be provided
         controlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
         dashConnectControlsContainer: null, // To be provided
         model: {
             program: []
+        },
+        contextAwareness: {
+            dashRobotIntegration: {
+                checks: {
+                    dashRobotIntegration: {
+                        contextValue: "{c2lc.bluetoothApiIsAvailable}",
+                        gradeNames: "c2lc.app.dashRobotIntegration"
+                    }
+                }
+            }
         },
         components: {
             interpreter: {
@@ -30,11 +40,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     actions: {
                         "forward.turtle": "{that}.turtleForwardHandler",
-                        "forward.dash": "{that}.dashForwardHandler",
                         "left.turtle": "{that}.turtleLeftHandler",
-                        "left.dash": "{that}.dashLeftHandler",
-                        "right.turtle": "{that}.turtleRightHandler",
-                        "right.dash": "{that}.dashRightHandler"
+                        "right.turtle": "{that}.turtleRightHandler"
                     },
                     components: {
                         turtleForwardHandler: {
@@ -67,33 +74,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                         func: "{app}.graphics.right",
                                         args: [ 90 ]
                                     }
-                                }
-                            }
-                        },
-                        dashForwardHandler: {
-                            type: "c2lc.dashActionHandler",
-                            options: {
-                                operation: "forward",
-                                components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
-                            }
-                        },
-                        dashLeftHandler: {
-                            type: "c2lc.dashActionHandler",
-                            options: {
-                                operation: "left",
-                                components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
-                            }
-                        },
-                        dashRightHandler: {
-                            type: "c2lc.dashActionHandler",
-                            options: {
-                                operation: "right",
-                                components: {
-                                    dashDriver: "{app}.dashDriver"
                                 }
                             }
                         }
@@ -138,6 +118,49 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         syntax: "{textEditorSyntax}"
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("c2lc.app.dashRobotIntegration", {
+        components: {
+            interpreter: {
+                options: {
+                    actions: {
+                        "forward.turtle": "{that}.turtleForwardHandler",
+                        "left.turtle": "{that}.turtleLeftHandler",
+                        "right.turtle": "{that}.turtleRightHandler"
+                    },
+                    components: {
+                        dashForwardHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "forward",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        },
+                        dashLeftHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "left",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        },
+                        dashRightHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "right",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        }
                     }
                 }
             },
