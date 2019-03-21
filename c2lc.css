@@ -89,11 +89,11 @@ button {
     color: #000;
 }
 
-.c2lc-controls {
+.c2lc-interpreterControls {
     margin-top: 2rem;
 }
 
-.c2lc-controls button {
+.c2lc-interpreterControls button {
     font-family: inherit;
     font-size: 1.7rem;
     margin-right: 1.2rem;

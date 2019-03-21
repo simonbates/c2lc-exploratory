@@ -15,7 +15,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.app", {
         gradeNames: ["fluid.modelComponent", "fluid.contextAware"],
         graphicsContainer: null, // To be provided
-        controlsContainer: null, // To be provided
+        interpreterControlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
         dashConnectControlsContainer: null, // To be provided
         model: {
@@ -89,9 +89,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 type: "c2lc.turtleGraphics",
                 container: "{app}.options.graphicsContainer"
             },
-            controls: {
+            interpreterControls: {
                 type: "c2lc.interpreterControls",
-                container: "{app}.options.controlsContainer",
+                container: "{app}.options.interpreterControlsContainer",
                 options: {
                     listeners: {
                         "onStep.stepInterpreter": {
