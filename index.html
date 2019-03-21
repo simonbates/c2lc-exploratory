@@ -8,12 +8,16 @@
         <link href="c2lc.css" rel="stylesheet">
 
         <script src="node_modules/infusion/dist/infusion-all.js"></script>
+        <script src="src/FeatureDetection.js"></script>
         <script src="src/Interpreter.js"></script>
         <script src="src/Math.js"></script>
         <script src="src/TurtleGraphics.js"></script>
         <script src="src/InterpreterControls.js"></script>
         <script src="src/TextSyntax.js"></script>
         <script src="src/ProgramTextEditor.js"></script>
+        <script src="src/DashDriver.js"></script>
+        <script src="src/DashActionHandler.js"></script>
+        <script src="src/DashConnectControls.js"></script>
         <script src="src/App.js"></script>
     </head>
     <body>
@@ -28,7 +32,8 @@
                     Available actions: forward, left, right.<br>
                     Write your program actions in the box above and separate them by spaces. For example, to draw a square, use: <a class="c2lc-example" href="#">forward left forward left forward left forward</a>
                 </div>
-                <div class="c2lc-controls"></div>
+                <div class="c2lc-dashConnectControls"></div>
+                <div class="c2lc-interpreterControls"></div>
             </div>
         </div>
         <div class="c2lc-examples">
@@ -37,10 +42,14 @@
         </div>
         <script>
             $(document).ready(function () {
+                fluid.contextAware.makeChecks({
+                    "c2lc.bluetoothApiIsAvailable": "c2lc.bluetoothApiIsAvailable"
+                });
                 var app = c2lc.app({
                     graphicsContainer: ".c2lc-graphics",
-                    controlsContainer: ".c2lc-controls",
-                    textEditorContainer: ".c2lc-textEditor"
+                    interpreterControlsContainer: ".c2lc-interpreterControls",
+                    textEditorContainer: ".c2lc-textEditor",
+                    dashConnectControlsContainer: ".c2lc-dashConnectControls"
                 });
                 var syntax = c2lc.textSyntax();
                 $(".c2lc-example").click(function (event) {

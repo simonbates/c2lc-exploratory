@@ -13,12 +13,23 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     "use strict";
 
     fluid.defaults("c2lc.app", {
-        gradeNames: "fluid.modelComponent",
+        gradeNames: ["fluid.modelComponent", "fluid.contextAware"],
         graphicsContainer: null, // To be provided
-        controlsContainer: null, // To be provided
+        interpreterControlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
+        dashConnectControlsContainer: null, // To be provided
         model: {
             program: []
+        },
+        contextAwareness: {
+            dashRobotIntegration: {
+                checks: {
+                    dashRobotIntegration: {
+                        contextValue: "{c2lc.bluetoothApiIsAvailable}",
+                        gradeNames: "c2lc.app.dashRobotIntegration"
+                    }
+                }
+            }
         },
         components: {
             interpreter: {
@@ -28,12 +39,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         program: "{app}.model.program"
                     },
                     actions: {
-                        forward: "{that}.forwardHandler",
-                        left: "{that}.leftHandler",
-                        right: "{that}.rightHandler"
+                        "forward.turtle": "{that}.turtleForwardHandler",
+                        "left.turtle": "{that}.turtleLeftHandler",
+                        "right.turtle": "{that}.turtleRightHandler"
                     },
                     components: {
-                        forwardHandler: {
+                        turtleForwardHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
@@ -44,7 +55,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                 }
                             }
                         },
-                        leftHandler: {
+                        turtleLeftHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
@@ -55,7 +66,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                 }
                             }
                         },
-                        rightHandler: {
+                        turtleRightHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
@@ -78,9 +89,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 type: "c2lc.turtleGraphics",
                 container: "{app}.options.graphicsContainer"
             },
-            controls: {
+            interpreterControls: {
                 type: "c2lc.interpreterControls",
-                container: "{app}.options.controlsContainer",
+                container: "{app}.options.interpreterControlsContainer",
                 options: {
                     listeners: {
                         "onStep.stepInterpreter": {
@@ -107,6 +118,66 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         syntax: "{textEditorSyntax}"
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("c2lc.app.dashRobotIntegration", {
+        components: {
+            interpreter: {
+                options: {
+                    actions: {
+                        "forward.dash": "{that}.dashForwardHandler",
+                        "left.dash": "{that}.dashLeftHandler",
+                        "right.dash": "{that}.dashRightHandler"
+                    },
+                    components: {
+                        dashForwardHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "forward",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        },
+                        dashLeftHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "left",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        },
+                        dashRightHandler: {
+                            type: "c2lc.dashActionHandler",
+                            options: {
+                                operation: "right",
+                                components: {
+                                    dashDriver: "{app}.dashDriver"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            dashDriver: {
+                type: "c2lc.dashDriver"
+            },
+            dashConnectControls: {
+                type: "c2lc.dashConnectControls",
+                container: "{app}.options.dashConnectControlsContainer",
+                options: {
+                    model: {
+                        connectionState: "{dashDriver}.model.connectionState"
+                    },
+                    listeners: {
+                        "onInitiateConnect.connectToDash": {
+                            func: "{dashDriver}.connect"
+                        }
                     }
                 }
             }

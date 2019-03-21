@@ -10,6 +10,12 @@ h1 {
     text-align: center;
 }
 
+button {
+    border: 0.1rem solid #555;
+    padding: 0.4em;
+    color: #222;
+}
+
 .c2lc-container {
     display: flex;
     flex-direction: row;
@@ -71,17 +77,26 @@ h1 {
     line-height: 1.3;
 }
 
-.c2lc-controls {
+.c2lc-dashConnectControls {
     margin-top: 2rem;
 }
 
-.c2lc-controls button {
+.c2lc-dashConnectControls button {
+    font-family: inherit;
+    font-size: inherit;
+    margin-right: 0.5rem;
+    background: #90EAF8;
+    color: #000;
+}
+
+.c2lc-interpreterControls {
+    margin-top: 2rem;
+}
+
+.c2lc-interpreterControls button {
     font-family: inherit;
     font-size: 1.7rem;
     margin-right: 1.2rem;
-    border: 0.1rem solid #555;
-    padding: 0.3em;
-    color: #222;
     background: #FFDA4E;
 }
 
