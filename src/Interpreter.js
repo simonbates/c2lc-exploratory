@@ -34,6 +34,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 funcName: "c2lc.interpreter.reset",
                 args: "{that}"
             },
+            run: {
+                funcName: "c2lc.interpreter.run",
+                args: "{that}"
+            },
             step: {
                 funcName: "c2lc.interpreter.step",
                 args: "{that}"
@@ -53,8 +57,19 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         interpreter.applier.change("programCounter", 0);
     };
 
+    c2lc.interpreter.atEnd = function (interpreter) {
+        return interpreter.model.programCounter >= interpreter.model.program.length;
+    };
+
+    c2lc.interpreter.run = function (interpreter) {
+        c2lc.interpreter.reset(interpreter);
+        while (!c2lc.interpreter.atEnd(interpreter)) {
+            c2lc.interpreter.step(interpreter);
+        }
+    };
+
     c2lc.interpreter.step = function (interpreter) {
-        if (interpreter.model.programCounter < interpreter.model.program.length) {
+        if (!c2lc.interpreter.atEnd(interpreter)) {
             if (interpreter.model.programCounter === 0) {
                 interpreter.events.onStart.fire();
             }
