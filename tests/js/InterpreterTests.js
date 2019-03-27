@@ -157,7 +157,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
     });
 
-    jqUnit.test("Step a program with an unknown action", function () {
+    jqUnit.asyncTest("Step a program with an unknown action", function () {
         jqUnit.expect(1);
 
         var interpreter = c2lc.interpreter({
@@ -166,12 +166,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         });
 
-        try {
-            interpreter.step();
-            jqUnit.fail("Exception should have been thrown");
-        } catch (e) {
-            jqUnit.assertEquals("Exception expected", "Unknown action: unknown-action", e.message);
-        }
+        interpreter.step().then(function () {
+            jqUnit.fail("Promise should have been rejected");
+            jqUnit.start();
+        }, function (e) {
+            jqUnit.assertEquals("Promise rejection expected", "Unknown action: unknown-action", e.message);
+            jqUnit.start();
+        });
     });
 
 })();

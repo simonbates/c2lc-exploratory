@@ -79,8 +79,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     };
 
+    // Returns: A promise that resolves when the command has finished
     c2lc.dashDriver.sendCommand = function (dashDriver, bytes) {
+        var togo = fluid.promise();
         dashDriver.charCommand.writeValue(new Uint8Array(bytes));
+        // TODO: Use feedback from Dash to know when command has finished, rather than after a set amount of time
+        setTimeout(function () {
+            togo.resolve();
+        }, 1900);
+        return togo;
     };
 
 })();

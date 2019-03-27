@@ -27,7 +27,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         actions: {},
         model: {
             program: [],
-            programCounter: 0
+            programCounter: 0,
+            isRunning: false
         },
         invokers: {
             reset: {
@@ -35,12 +36,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 args: "{that}"
             },
             run: {
-                funcName: "c2lc.interpreter.run",
+                funcName: "c2lc.interpreter.startRun",
                 args: "{that}"
             },
             step: {
                 funcName: "c2lc.interpreter.step",
                 args: "{that}"
+                // Returns: promise
             }
         },
         events: {
@@ -54,6 +56,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     });
 
     c2lc.interpreter.reset = function (interpreter) {
+        interpreter.applier.change("isRunning", false);
         interpreter.applier.change("programCounter", 0);
     };
 
@@ -61,27 +64,50 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         return interpreter.model.programCounter >= interpreter.model.program.length;
     };
 
-    c2lc.interpreter.run = function (interpreter) {
+    c2lc.interpreter.startRun = function (interpreter) {
         c2lc.interpreter.reset(interpreter);
-        while (!c2lc.interpreter.atEnd(interpreter)) {
-            c2lc.interpreter.step(interpreter);
+        interpreter.applier.change("isRunning", true);
+        c2lc.interpreter.continueRun(interpreter);
+    };
+
+    c2lc.interpreter.continueRun = function (interpreter) {
+        if (interpreter.model.isRunning) {
+            if (c2lc.interpreter.atEnd(interpreter)) {
+                interpreter.applier.change("isRunning", false);
+            } else {
+                c2lc.interpreter.step(interpreter).then(function () {
+                    c2lc.interpreter.continueRun(interpreter);
+                });
+            }
         }
     };
 
+    // Returns: promise
     c2lc.interpreter.step = function (interpreter) {
-        if (!c2lc.interpreter.atEnd(interpreter)) {
+        var togo = fluid.promise();
+        if (c2lc.interpreter.atEnd(interpreter)) {
+            // At end, nothing to do
+            togo.resolve();
+        } else {
             if (interpreter.model.programCounter === 0) {
                 interpreter.events.onStart.fire();
             }
             var action = interpreter.model.program[interpreter.model.programCounter];
             var actionHandlers = c2lc.interpreter.lookUpActionHandlers(interpreter, action);
             if (actionHandlers.length === 0) {
-                throw new Error("Unknown action: " + action);
+                // Unknown action
+                togo.reject(new Error("Unknown action: " + action));
             } else {
-                c2lc.interpreter.callActionHandlers(interpreter, actionHandlers);
-                interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
+                var promise = c2lc.interpreter.callActionHandlers(interpreter, actionHandlers);
+                promise.then(function () {
+                    // When the action handlers have completed,
+                    // increment the programCounter
+                    interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
+                    togo.resolve();
+                });
             }
         }
+        return togo;
     };
 
     c2lc.interpreter.lookUpActionHandlers = function (interpreter, action) {
@@ -121,10 +147,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         throw new Error("Bad action key: " + actionKey);
     };
 
+    // Returns: A promise representing the completion of all of the
+    // action handlers
     c2lc.interpreter.callActionHandlers = function (interpreter, actionHandlers) {
+        var promises = [];
         fluid.each(actionHandlers, function (actionHandler) {
-            actionHandler.handleAction(interpreter);
+            promises.push(actionHandler.handleAction(interpreter));
         });
+        return fluid.promise.sequence(promises);
     };
 
 })();
