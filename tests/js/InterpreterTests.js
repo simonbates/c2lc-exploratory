@@ -68,15 +68,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("Program counter is 0", 0, interpreter.model.programCounter);
     });
 
-    jqUnit.test("Stepping an empty program leaves the program counter at 0", function () {
+    jqUnit.asyncTest("Stepping an empty program leaves the program counter at 0", function () {
         jqUnit.expect(2);
         var interpreter = c2lc.interpreter();
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter at 0 after step", 0, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter at 0 after step", 0, interpreter.model.programCounter);
+            jqUnit.start();
+        });
     });
 
-    jqUnit.test("Step a program with 1 action", function () {
+    jqUnit.asyncTest("Step a program with 1 action", function () {
         jqUnit.expect(5);
 
         var interpreter = c2lc.tests.interpreterWithIncrement({
@@ -88,15 +90,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        // Test step at end of program
-        interpreter.step();
-        jqUnit.assertEquals("Program counter remains at 1 after step at end of program", 1, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            // Test step at end of program
+            interpreter.step().then(function () {
+                jqUnit.assertEquals("Program counter remains at 1 after step at end of program", 1, interpreter.model.programCounter);
+                jqUnit.start();
+            });
+        });
     });
 
-    jqUnit.test("Step a program with 2 actions", function () {
+    jqUnit.asyncTest("Step a program with 2 actions", function () {
         jqUnit.expect(7);
 
         var interpreter = c2lc.tests.interpreterWithIncrement({
@@ -108,18 +113,22 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 2 after step", 2, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 12 after step", 12, interpreter.model.x);
-        // Test step at end of program
-        interpreter.step();
-        jqUnit.assertEquals("Program counter remains at 2 after step at end of program", 2, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            interpreter.step().then(function () {
+                jqUnit.assertEquals("Program counter is 2 after step", 2, interpreter.model.programCounter);
+                jqUnit.assertEquals("x is 12 after step", 12, interpreter.model.x);
+                // Test step at end of program
+                interpreter.step().then(function () {
+                    jqUnit.assertEquals("Program counter remains at 2 after step at end of program", 2, interpreter.model.programCounter);
+                    jqUnit.start();
+                });
+            });
+        });
     });
 
-    jqUnit.test("Step a program with 2 actionHandlers", function () {
+    jqUnit.asyncTest("Step a program with 2 actionHandlers", function () {
         jqUnit.expect(6);
 
         var interpreter = c2lc.interpreter({
@@ -151,10 +160,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
         jqUnit.assertEquals("y is initially 20", 20, interpreter.model.y);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
+            jqUnit.start();
+        });
     });
 
     jqUnit.asyncTest("Step a program with an unknown action", function () {
