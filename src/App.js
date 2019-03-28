@@ -45,33 +45,36 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         turtleForwardHandler: {
-                            type: "c2lc.objectMethodActionHandler",
+                            type: "c2lc.actionHandler",
                             options: {
-                                members: {
-                                    targetObject: "{app}.graphics"
-                                },
-                                method: "forward",
-                                args: [ 40 ]
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.forward",
+                                        args: [ 40 ]
+                                    }
+                                }
                             }
                         },
                         turtleLeftHandler: {
-                            type: "c2lc.objectMethodActionHandler",
+                            type: "c2lc.actionHandler",
                             options: {
-                                members: {
-                                    targetObject: "{app}.graphics"
-                                },
-                                method: "left",
-                                args: [ 90 ]
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.left",
+                                        args: [ 90 ]
+                                    }
+                                }
                             }
                         },
                         turtleRightHandler: {
-                            type: "c2lc.objectMethodActionHandler",
+                            type: "c2lc.actionHandler",
                             options: {
-                                members: {
-                                    targetObject: "{app}.graphics"
-                                },
-                                method: "right",
-                                args: [ 90 ]
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.graphics.right",
+                                        args: [ 90 ]
+                                    }
+                                }
                             }
                         }
                     },

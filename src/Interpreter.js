@@ -18,7 +18,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         gradeNames: "fluid.component",
         invokers: {
             handleAction: "fluid.notImplemented"
-            // Params: interpreter
+                // Params: interpreter
+                // Returns: May optionally return a Promise if the action is asynchronous
         }
     });
 
@@ -82,7 +83,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }
     };
 
-    // Returns: promise
+    // Returns: Promise
     c2lc.interpreter.step = function (interpreter) {
         var togo = fluid.promise();
         if (c2lc.interpreter.atEnd(interpreter)) {
@@ -147,14 +148,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         throw new Error("Bad action key: " + actionKey);
     };
 
-    // Returns: A promise representing the completion of all of the
+    // Returns: A Promise representing the completion of all of the
     // action handlers
     c2lc.interpreter.callActionHandlers = function (interpreter, actionHandlers) {
-        var promises = [];
+        var actionValues = [];
         fluid.each(actionHandlers, function (actionHandler) {
-            promises.push(actionHandler.handleAction(interpreter));
+            actionValues.push(actionHandler.handleAction(interpreter));
         });
-        return fluid.promise.sequence(promises);
+        return fluid.promise.sequence(actionValues);
     };
 
 })();
