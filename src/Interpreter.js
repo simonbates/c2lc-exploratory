@@ -43,7 +43,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             step: {
                 funcName: "c2lc.interpreter.step",
                 args: "{that}"
-                // Returns: promise
+                // Returns: Promise
             }
         },
         events: {
@@ -83,11 +83,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }
     };
 
-    // Returns: Promise
+    // Returns: A Promise representing completion of the step
     c2lc.interpreter.step = function (interpreter) {
         var togo = fluid.promise();
         if (c2lc.interpreter.atEnd(interpreter)) {
-            // At end, nothing to do
+            // We're at the end, nothing to do
             togo.resolve();
         } else {
             if (interpreter.model.programCounter === 0) {
