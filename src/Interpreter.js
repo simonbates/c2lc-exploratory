@@ -39,6 +39,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             run: {
                 funcName: "c2lc.interpreter.startRun",
                 args: "{that}"
+                // Returns: Promise
             },
             step: {
                 funcName: "c2lc.interpreter.step",
@@ -66,20 +67,25 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.interpreter.startRun = function (interpreter) {
+        var togo = fluid.promise();
         c2lc.interpreter.reset(interpreter);
         interpreter.applier.change("isRunning", true);
-        c2lc.interpreter.continueRun(interpreter);
+        c2lc.interpreter.continueRun(interpreter, togo);
+        return togo;
     };
 
-    c2lc.interpreter.continueRun = function (interpreter) {
+    c2lc.interpreter.continueRun = function (interpreter, runPromise) {
         if (interpreter.model.isRunning) {
             if (c2lc.interpreter.atEnd(interpreter)) {
                 interpreter.applier.change("isRunning", false);
+                runPromise.resolve();
             } else {
                 c2lc.interpreter.step(interpreter).then(function () {
-                    c2lc.interpreter.continueRun(interpreter);
+                    c2lc.interpreter.continueRun(interpreter, runPromise);
                 });
             }
+        } else  {
+            runPromise.resolve();
         }
     };
 
