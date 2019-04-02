@@ -105,10 +105,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 // Unknown action
                 togo.reject(new Error("Unknown action: " + action));
             } else {
-                var promise = c2lc.interpreter.callActionHandlers(interpreter, actionHandlers);
-                promise.then(function () {
-                    // When the action handlers have completed,
-                    // increment the programCounter
+                // When the action handlers have completed,
+                // increment the programCounter and resolve the step Promise
+                c2lc.interpreter.callActionHandlers(interpreter, actionHandlers).then(function () {
                     interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
                     togo.resolve();
                 });
