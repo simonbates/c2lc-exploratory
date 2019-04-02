@@ -101,16 +101,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("Run an empty program", function () {
-        jqUnit.expect(1);
-        var interpreter = c2lc.interpreter();
-        interpreter.run().then(function () {
-            jqUnit.assertFalse("Program has stopped running",
-                interpreter.model.isRunning);
-            jqUnit.start();
-        });
-    });
-
     jqUnit.asyncTest("Step a program with 1 action", function () {
         jqUnit.expect(5);
 
@@ -131,24 +121,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 jqUnit.assertEquals("Program counter remains at 1 after step at end of program", 1, interpreter.model.programCounter);
                 jqUnit.start();
             });
-        });
-    });
-
-    jqUnit.asyncTest("Run a program with 1 action", function () {
-        jqUnit.expect(2);
-
-        var interpreter = c2lc.tests.interpreterWithIncrement({
-            model: {
-                program: ["increment-x"],
-                x: 10
-            }
-        });
-
-        interpreter.run().then(function () {
-            jqUnit.assertFalse("Program has stopped running",
-                interpreter.model.isRunning);
-            jqUnit.assertEquals("x is 11 after run", 11, interpreter.model.x);
-            jqUnit.start();
         });
     });
 
@@ -219,7 +191,35 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("Run program with mix of sync and async actionHandlers", function () {
+    jqUnit.asyncTest("Run an empty program", function () {
+        jqUnit.expect(1);
+        var interpreter = c2lc.interpreter();
+        interpreter.run().then(function () {
+            jqUnit.assertFalse("Program has stopped running",
+                interpreter.model.isRunning);
+            jqUnit.start();
+        });
+    });
+
+    jqUnit.asyncTest("Run a program with 1 action", function () {
+        jqUnit.expect(2);
+
+        var interpreter = c2lc.tests.interpreterWithIncrement({
+            model: {
+                program: ["increment-x"],
+                x: 10
+            }
+        });
+
+        interpreter.run().then(function () {
+            jqUnit.assertFalse("Program has stopped running",
+                interpreter.model.isRunning);
+            jqUnit.assertEquals("x is 11 after run", 11, interpreter.model.x);
+            jqUnit.start();
+        });
+    });
+
+    jqUnit.asyncTest("Run a program with a mix of sync and async actionHandlers", function () {
         jqUnit.expect(8);
 
         var interpreter = c2lc.interpreter({
