@@ -94,6 +94,9 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 container: "{app}.options.interpreterControlsContainer",
                 options: {
                     listeners: {
+                        "onRun.runInterpreter": {
+                            func: "{interpreter}.run"
+                        },
                         "onStep.stepInterpreter": {
                             func: "{interpreter}.step"
                         },

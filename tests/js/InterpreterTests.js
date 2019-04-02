@@ -16,6 +16,29 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     var c2lc = fluid.registerNamespace("c2lc");
 
+    fluid.defaults("c2lc.tests.incrementAsync", {
+        gradeNames: "c2lc.actionHandler",
+        modelPath: null, // To be provided
+        invokers: {
+            handleAction: {
+                funcName: "c2lc.tests.incrementAsync.handleAction",
+                args: [
+                    "{arguments}.0", // interpreter
+                    "{that}.options.modelPath"
+                ]
+            }
+        }
+    });
+
+    c2lc.tests.incrementAsync.handleAction = function (interpreter, modelPath) {
+        var togo = fluid.promise();
+        setTimeout(function () {
+            interpreter.applier.change(modelPath, fluid.get(interpreter.model, modelPath) + 1);
+            togo.resolve();
+        }, 0);
+        return togo;
+    };
+
     fluid.defaults("c2lc.tests.interpreterWithIncrement", {
         gradeNames: "c2lc.interpreter",
         actions: {
@@ -68,15 +91,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("Program counter is 0", 0, interpreter.model.programCounter);
     });
 
-    jqUnit.test("Stepping an empty program leaves the program counter at 0", function () {
+    jqUnit.asyncTest("Stepping an empty program leaves the program counter at 0", function () {
         jqUnit.expect(2);
         var interpreter = c2lc.interpreter();
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter at 0 after step", 0, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter at 0 after step", 0, interpreter.model.programCounter);
+            jqUnit.start();
+        });
     });
 
-    jqUnit.test("Step a program with 1 action", function () {
+    jqUnit.asyncTest("Step a program with 1 action", function () {
         jqUnit.expect(5);
 
         var interpreter = c2lc.tests.interpreterWithIncrement({
@@ -88,15 +113,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        // Test step at end of program
-        interpreter.step();
-        jqUnit.assertEquals("Program counter remains at 1 after step at end of program", 1, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            // Test step at end of program
+            interpreter.step().then(function () {
+                jqUnit.assertEquals("Program counter remains at 1 after step at end of program", 1, interpreter.model.programCounter);
+                jqUnit.start();
+            });
+        });
     });
 
-    jqUnit.test("Step a program with 2 actions", function () {
+    jqUnit.asyncTest("Step a program with 2 actions", function () {
         jqUnit.expect(7);
 
         var interpreter = c2lc.tests.interpreterWithIncrement({
@@ -108,18 +136,22 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 2 after step", 2, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 12 after step", 12, interpreter.model.x);
-        // Test step at end of program
-        interpreter.step();
-        jqUnit.assertEquals("Program counter remains at 2 after step at end of program", 2, interpreter.model.programCounter);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            interpreter.step().then(function () {
+                jqUnit.assertEquals("Program counter is 2 after step", 2, interpreter.model.programCounter);
+                jqUnit.assertEquals("x is 12 after step", 12, interpreter.model.x);
+                // Test step at end of program
+                interpreter.step().then(function () {
+                    jqUnit.assertEquals("Program counter remains at 2 after step at end of program", 2, interpreter.model.programCounter);
+                    jqUnit.start();
+                });
+            });
+        });
     });
 
-    jqUnit.test("Step a program with 2 actionHandlers", function () {
+    jqUnit.asyncTest("Step a program with 2 actionHandlers", function () {
         jqUnit.expect(6);
 
         var interpreter = c2lc.interpreter({
@@ -151,13 +183,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         jqUnit.assertEquals("Program counter is initially 0", 0, interpreter.model.programCounter);
         jqUnit.assertEquals("x is initially 10", 10, interpreter.model.x);
         jqUnit.assertEquals("y is initially 20", 20, interpreter.model.y);
-        interpreter.step();
-        jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
-        jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
-        jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
+        interpreter.step().then(function () {
+            jqUnit.assertEquals("Program counter is 1 after step", 1, interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 11 after step", 11, interpreter.model.x);
+            jqUnit.assertEquals("y is 21 after step", 21, interpreter.model.y);
+            jqUnit.start();
+        });
     });
 
-    jqUnit.test("Step a program with an unknown action", function () {
+    jqUnit.asyncTest("Step a program with an unknown action", function () {
         jqUnit.expect(1);
 
         var interpreter = c2lc.interpreter({
@@ -166,12 +200,114 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         });
 
-        try {
-            interpreter.step();
-            jqUnit.fail("Exception should have been thrown");
-        } catch (e) {
-            jqUnit.assertEquals("Exception expected", "Unknown action: unknown-action", e.message);
-        }
+        interpreter.step().then(function () {
+            jqUnit.fail("Promise should have been rejected");
+            jqUnit.start();
+        }, function (e) {
+            jqUnit.assertEquals("Promise rejection expected", "Unknown action: unknown-action", e.message);
+            jqUnit.start();
+        });
     });
+
+    jqUnit.asyncTest("Run an empty program", function () {
+        jqUnit.expect(1);
+        var interpreter = c2lc.interpreter();
+        interpreter.run().then(function () {
+            jqUnit.assertFalse("Program has stopped running",
+                interpreter.model.isRunning);
+            jqUnit.start();
+        });
+    });
+
+    jqUnit.asyncTest("Run a program with 1 action", function () {
+        jqUnit.expect(2);
+
+        var interpreter = c2lc.tests.interpreterWithIncrement({
+            model: {
+                program: ["increment-x"],
+                x: 10
+            }
+        });
+
+        interpreter.run().then(function () {
+            jqUnit.assertFalse("Program has stopped running",
+                interpreter.model.isRunning);
+            jqUnit.assertEquals("x is 11 after run", 11, interpreter.model.x);
+            jqUnit.start();
+        });
+    });
+
+    jqUnit.asyncTest("Run a program with a mix of sync and async actionHandlers", function () {
+        jqUnit.expect(8);
+
+        var interpreter = c2lc.interpreter({
+            model: {
+                program: ["increment", "increment", "increment"],
+                x: 10,
+                y: 20
+            },
+            actions: {
+                "increment.x": "{that}.incrementXHandler",
+                "increment.y": "{that}.incrementYHandler"
+            },
+            components: {
+                incrementXHandler: {
+                    type: "c2lc.actions.increment",
+                    options: {
+                        modelPath: "x"
+                    }
+                },
+                incrementYHandler: {
+                    type: "c2lc.tests.incrementAsync",
+                    options: {
+                        modelPath: "y"
+                    }
+                }
+            },
+            modelListeners: {
+                programCounter: {
+                    funcName: "c2lc.tests.checkInterpreterModelAtStep",
+                    args: [
+                        "{change}.value",
+                        {
+                            0: {
+                                x: 10,
+                                y: 20
+                            },
+                            1: {
+                                x: 11,
+                                y: 21
+                            },
+                            2: {
+                                x: 12,
+                                y: 22
+                            },
+                            3: {
+                                x: 13,
+                                y: 23
+                            }
+                        },
+                        "{that}.model"
+                    ]
+                }
+            }
+        });
+
+        interpreter.run().then(function () {
+            jqUnit.assertFalse("Program has stopped running",
+                interpreter.model.isRunning);
+            jqUnit.assertEquals("Program counter is 3 after run", 3,
+                interpreter.model.programCounter);
+            jqUnit.assertEquals("x is 13 after run", 13, interpreter.model.x);
+            jqUnit.assertEquals("y is 23 after run", 23, interpreter.model.y);
+            jqUnit.start();
+        });
+    });
+
+    c2lc.tests.checkInterpreterModelAtStep = function (programCounter, expectedModels, actualModel) {
+        jqUnit.assertLeftHand("Check interpreter model",
+            expectedModels[programCounter],
+            actualModel);
+    };
 
 })();

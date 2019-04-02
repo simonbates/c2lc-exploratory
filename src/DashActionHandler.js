@@ -30,7 +30,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     c2lc.dashActionHandler.handleAction = function (actionHandler) {
         if (actionHandler.dashDriver.model.connectionState === "connected") {
-            actionHandler.dashDriver[actionHandler.options.operation].apply();
+            return actionHandler.dashDriver[actionHandler.options.operation].apply();
+        } else {
+            // Otherwise, resolve immediately
+            var togo = fluid.promise();
+            togo.resolve();
+            return togo;
         }
     };
 

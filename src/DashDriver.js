@@ -41,20 +41,30 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 funcName: "c2lc.dashDriver.sendCommand",
                 args: [
                     "{that}",
-                    "{arguments}.0" // Array of bytes
+                    "{arguments}.0", // Array of bytes
+                    "{arguments}.1" // Wait time in ms
                 ]
             },
             forward: {
                 func: "{that}.sendCommand",
-                args: [[0x23, 0xC8, 0x00, 0x00, 0x03, 0xE8, 0x00, 0x00, 0x80]]
+                args: [
+                    [0x23, 0xC8, 0x00, 0x00, 0x03, 0xE8, 0x00, 0x00, 0x80],
+                    1900
+                ]
             },
             left: {
                 func: "{that}.sendCommand",
-                args: [[0x23, 0x00, 0x00, 0x9D, 0x03, 0xE8, 0x00, 0x00, 0x80]]
+                args: [
+                    [0x23, 0x00, 0x00, 0x9D, 0x03, 0xE8, 0x00, 0x00, 0x80],
+                    1900
+                ]
             },
             right: {
                 func: "{that}.sendCommand",
-                args: [[0x23, 0x00, 0x00, 0x63, 0x03, 0xE8, 0xC0, 0xC0, 0x80]]
+                args: [
+                    [0x23, 0x00, 0x00, 0x63, 0x03, 0xE8, 0xC0, 0xC0, 0x80],
+                    1900
+                ]
             }
         }
     });
@@ -79,8 +89,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     };
 
-    c2lc.dashDriver.sendCommand = function (dashDriver, bytes) {
+    // Returns: A Promise representing completion of the command
+    c2lc.dashDriver.sendCommand = function (dashDriver, bytes, waitTimeMs) {
+        var togo = fluid.promise();
         dashDriver.charCommand.writeValue(new Uint8Array(bytes));
+        // TODO: Ideally, use feedback from Dash to know when the command has finished, rather than after a set amount of time
+        setTimeout(function () {
+            togo.resolve();
+        }, waitTimeMs);
+        return togo;
     };
 
 })();
