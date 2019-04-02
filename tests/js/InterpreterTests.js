@@ -191,6 +191,24 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     });
 
+    jqUnit.asyncTest("Step a program with an unknown action", function () {
+        jqUnit.expect(1);
+
+        var interpreter = c2lc.interpreter({
+            model: {
+                program: ["unknown-action"]
+            }
+        });
+
+        interpreter.step().then(function () {
+            jqUnit.fail("Promise should have been rejected");
+            jqUnit.start();
+        }, function (e) {
+            jqUnit.assertEquals("Promise rejection expected", "Unknown action: unknown-action", e.message);
+            jqUnit.start();
+        });
+    });
+
     jqUnit.asyncTest("Run an empty program", function () {
         jqUnit.expect(1);
         var interpreter = c2lc.interpreter();
@@ -291,23 +309,5 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             expectedModels[programCounter],
             actualModel);
     };
-
-    jqUnit.asyncTest("Step a program with an unknown action", function () {
-        jqUnit.expect(1);
-
-        var interpreter = c2lc.interpreter({
-            model: {
-                program: ["unknown-action"]
-            }
-        });
-
-        interpreter.step().then(function () {
-            jqUnit.fail("Promise should have been rejected");
-            jqUnit.start();
-        }, function (e) {
-            jqUnit.assertEquals("Promise rejection expected", "Unknown action: unknown-action", e.message);
-            jqUnit.start();
-        });
-    });
 
 })();
