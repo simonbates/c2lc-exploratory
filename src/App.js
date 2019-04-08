@@ -17,7 +17,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         graphicsContainer: null, // To be provided
         interpreterControlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
-        dashConnectControlsContainer: null, // To be provided
+        dashConnectControlContainer: null, // To be provided
         model: {
             program: []
         },
@@ -170,10 +170,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             dashDriver: {
                 type: "c2lc.dashDriver"
             },
-            dashConnectControls: {
-                type: "c2lc.dashConnectControls",
-                container: "{app}.options.dashConnectControlsContainer",
+            dashConnectControl: {
+                type: "c2lc.deviceConnectControl",
+                container: "{app}.options.dashConnectControlContainer",
                 options: {
+                    messages: {
+                        connect: "Connect to Dash"
+                    },
                     model: {
                         connectionState: "{dashDriver}.model.connectionState"
                     },

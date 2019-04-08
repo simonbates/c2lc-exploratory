@@ -77,11 +77,11 @@ button {
     line-height: 1.3;
 }
 
-.c2lc-dashConnectControls {
+.c2lc-dashConnectControl {
     margin-top: 2rem;
 }
 
-.c2lc-dashConnectControls button {
+.c2lc-dashConnectControl button {
     font-family: inherit;
     font-size: inherit;
     margin-right: 0.5rem;

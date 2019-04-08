@@ -15,37 +15,37 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     "use strict";
 
     var c2lc = fluid.registerNamespace("c2lc");
-    fluid.registerNamespace("c2lc.tests.dashConnectControls");
+    fluid.registerNamespace("c2lc.tests.deviceConnectControl");
 
-    fluid.defaults("c2lc.tests.dashConnectControlsTestTree", {
+    fluid.defaults("c2lc.tests.deviceConnectControlTestTree", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
-            dashConnectControls: {
-                type: "c2lc.dashConnectControls",
-                container: ".c2lc-dashConnectControls"
+            deviceConnectControl: {
+                type: "c2lc.deviceConnectControl",
+                container: ".c2lc-deviceConnectControl"
             },
-            dashConnectControlsTester: {
-                type: "c2lc.tests.dashConnectControlsTester"
+            deviceConnectControlTester: {
+                type: "c2lc.tests.deviceConnectControlTester"
             }
         }
     });
 
-    fluid.defaults("c2lc.tests.dashConnectControlsTester", {
+    fluid.defaults("c2lc.tests.deviceConnectControlTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
-            name: "Dash Connect Controls Tests",
+            name: "Device Connect Control Tests",
             tests: [
                 {
                     expect: 2,
                     name: "Check initial connection state",
                     sequence: [
                         {
-                            funcName: "c2lc.tests.dashConnectControls.checkState",
+                            funcName: "c2lc.tests.deviceConnectControl.checkState",
                             args: [
                                 "notConnected",
                                 "",
-                                "{dashConnectControls}",
-                                "{dashConnectControls}.dom.connectionState"
+                                "{deviceConnectControl}",
+                                "{deviceConnectControl}.dom.connectionState"
                             ]
                         }
                     ]
@@ -55,16 +55,16 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     name: "Check 'connecting' state",
                     sequence: [
                         {
-                            func: "{dashConnectControls}.applier.change",
+                            func: "{deviceConnectControl}.applier.change",
                             args: ["connectionState", "connecting"]
                         },
                         {
-                            funcName: "c2lc.tests.dashConnectControls.checkState",
+                            funcName: "c2lc.tests.deviceConnectControl.checkState",
                             args: [
                                 "connecting",
                                 "Connecting...",
-                                "{dashConnectControls}",
-                                "{dashConnectControls}.dom.connectionState"
+                                "{deviceConnectControl}",
+                                "{deviceConnectControl}.dom.connectionState"
                             ]
                         }
                     ]
@@ -74,16 +74,16 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     name: "Check 'connected' state",
                     sequence: [
                         {
-                            func: "{dashConnectControls}.applier.change",
+                            func: "{deviceConnectControl}.applier.change",
                             args: ["connectionState", "connected"]
                         },
                         {
-                            funcName: "c2lc.tests.dashConnectControls.checkState",
+                            funcName: "c2lc.tests.deviceConnectControl.checkState",
                             args: [
                                 "connected",
                                 "Connected",
-                                "{dashConnectControls}",
-                                "{dashConnectControls}.dom.connectionState"
+                                "{deviceConnectControl}",
+                                "{deviceConnectControl}.dom.connectionState"
                             ]
                         }
                     ]
@@ -93,16 +93,16 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     name: "Check 'notConnected' state",
                     sequence: [
                         {
-                            func: "{dashConnectControls}.applier.change",
+                            func: "{deviceConnectControl}.applier.change",
                             args: ["connectionState", "notConnected"]
                         },
                         {
-                            funcName: "c2lc.tests.dashConnectControls.checkState",
+                            funcName: "c2lc.tests.deviceConnectControl.checkState",
                             args: [
                                 "notConnected",
                                 "Not connected",
-                                "{dashConnectControls}",
-                                "{dashConnectControls}.dom.connectionState"
+                                "{deviceConnectControl}",
+                                "{deviceConnectControl}.dom.connectionState"
                             ]
                         }
                     ]
@@ -113,10 +113,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     sequence: [
                         {
                             jQueryTrigger: "click",
-                            element: "{dashConnectControls}.dom.connectButton"
+                            element: "{deviceConnectControl}.dom.connectButton"
                         },
                         {
-                            event: "{dashConnectControls}.events.onInitiateConnect",
+                            event: "{deviceConnectControl}.events.onInitiateConnect",
                             listener: "jqUnit.assert",
                             args: ["onInitiateConnect event fired"]
                         }
@@ -126,8 +126,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }]
     });
 
-    c2lc.tests.dashConnectControls.checkState = function (expectedModelValue, expectedMessage, dashConnectControls, stateElem) {
-        jqUnit.assertEquals("connectionState model value", expectedModelValue, dashConnectControls.model.connectionState);
+    c2lc.tests.deviceConnectControl.checkState = function (expectedModelValue, expectedMessage, deviceConnectControl, stateElem) {
+        jqUnit.assertEquals("connectionState model value", expectedModelValue, deviceConnectControl.model.connectionState);
         jqUnit.assertEquals("UI message", expectedMessage, stateElem.text());
     };
 

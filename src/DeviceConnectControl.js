@@ -14,7 +14,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     var c2lc = fluid.registerNamespace("c2lc");
 
-    fluid.defaults("c2lc.dashConnectControls", {
+    fluid.defaults("c2lc.deviceConnectControl", {
         gradeNames: "fluid.viewComponent",
         model: {
             connectionState: "notConnected"
@@ -24,13 +24,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             onInitiateConnect: null
         },
         listeners: {
-            "onCreate.renderControls": {
-                "this": "{that}.container",
-                method: "html",
-                args: ["{that}.options.markup.controls"]
+            "onCreate.render": {
+                funcName: "c2lc.deviceConnectControl.render",
+                args: ["{that}"]
             },
             "onCreate.registerConnectClickHandler": {
-                priority: "after:renderControls",
+                priority: "after:render",
                 "this": "{that}.dom.connectButton",
                 method: "click",
                 args: ["{that}.events.onInitiateConnect.fire"]
@@ -38,7 +37,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         modelListeners: {
             connectionState: {
-                funcName: "c2lc.dashConnectControls.updateConnectionMessage",
+                funcName: "c2lc.deviceConnectControl.updateConnectionMessage",
                 args: [
                     "{change}.value",
                     "{that}.dom.connectionState",
@@ -48,10 +47,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         selectors: {
-            connectButton: ".c2lc-dashConnectControls-connect",
-            connectionState: ".c2lc-dashConnectControls-connectionState"
+            connectButton: ".c2lc-deviceConnectControl-connect",
+            connectionState: ".c2lc-deviceConnectControl-connectionState"
         },
         messages: {
+            connect: "Connect",
             connectionState: {
                 notConnected: "Not connected",
                 connecting: "Connecting...",
@@ -59,11 +59,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         markup: {
-            controls: "<button class='c2lc-dashConnectControls-connect'>Connect to Dash</button><span class='c2lc-dashConnectControls-connectionState'></span>"
+            control: "<button class='c2lc-deviceConnectControl-connect'>%connect</button><span class='c2lc-deviceConnectControl-connectionState'></span>"
         }
     });
 
-    c2lc.dashConnectControls.updateConnectionMessage = function (state, stateElem, messages) {
+    c2lc.deviceConnectControl.render = function (deviceConnectControl) {
+        deviceConnectControl.container.html(fluid.stringTemplate(
+            deviceConnectControl.options.markup.control,
+            deviceConnectControl.options.messages));
+    };
+
+    c2lc.deviceConnectControl.updateConnectionMessage = function (state, stateElem, messages) {
         stateElem.text(messages[state]);
     };
 
