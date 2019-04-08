@@ -17,6 +17,7 @@
         <script src="src/ProgramTextEditor.js"></script>
         <script src="src/DashDriver.js"></script>
         <script src="src/DashActionHandler.js"></script>
+        <script src="src/SpheroDriver.js"></script>
         <script src="src/DeviceConnectControl.js"></script>
         <script src="src/App.js"></script>
     </head>
@@ -33,6 +34,7 @@
                     Write your program actions in the box above and separate them by spaces. For example, to draw a square, use: <a class="c2lc-example" href="#">forward left forward left forward left forward left</a>
                 </div>
                 <div class="c2lc-dashConnectControl"></div>
+                <div class="c2lc-spheroConnectControl"></div>
                 <div class="c2lc-interpreterControls"></div>
             </div>
         </div>
@@ -49,7 +51,8 @@
                     graphicsContainer: ".c2lc-graphics",
                     interpreterControlsContainer: ".c2lc-interpreterControls",
                     textEditorContainer: ".c2lc-textEditor",
-                    dashConnectControlContainer: ".c2lc-dashConnectControl"
+                    dashConnectControlContainer: ".c2lc-dashConnectControl",
+                    spheroConnectControlContainer: ".c2lc-spheroConnectControl"
                 });
                 var syntax = c2lc.textSyntax();
                 $(".c2lc-example").click(function (event) {

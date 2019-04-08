@@ -18,6 +18,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         interpreterControlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
         dashConnectControlContainer: null, // To be provided
+        spheroConnectControlContainer: null, // To be provided
         model: {
             program: []
         },
@@ -27,6 +28,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     dashRobotIntegration: {
                         contextValue: "{c2lc.bluetoothApiIsAvailable}",
                         gradeNames: "c2lc.app.dashRobotIntegration"
+                    }
+                }
+            },
+            spheroRobotIntegration: {
+                checks: {
+                    spheroRobotIntegration: {
+                        contextValue: "{c2lc.bluetoothApiIsAvailable}",
+                        gradeNames: "c2lc.app.spheroRobotIntegration"
                     }
                 }
             }
@@ -183,6 +192,31 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     listeners: {
                         "onInitiateConnect.connectToDash": {
                             func: "{dashDriver}.connect"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("c2lc.app.spheroRobotIntegration", {
+        components: {
+            spheroDriver: {
+                type: "c2lc.spheroDriver"
+            },
+            spheroConnectControl: {
+                type: "c2lc.deviceConnectControl",
+                container: "{app}.options.spheroConnectControlContainer",
+                options: {
+                    messages: {
+                        connect: "Connect to Sphero"
+                    },
+                    model: {
+                        connectionState: "{spheroDriver}.model.connectionState"
+                    },
+                    listeners: {
+                        "onInitiateConnect.connectToSphero": {
+                            func: "{spheroDriver}.connect"
                         }
                     }
                 }
