@@ -201,6 +201,47 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     fluid.defaults("c2lc.app.spheroRobotIntegration", {
         components: {
+            interpreter: {
+                options: {
+                    actions: {
+                        "red.sphero": "{that}.spheroRedHandler",
+                        "green.sphero": "{that}.spheroGreenHandler",
+                        "blue.sphero": "{that}.spheroBlueHandler"
+                    },
+                    components: {
+                        spheroRedHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.spheroDriver.red"
+                                    }
+                                }
+                            }
+                        },
+                        spheroGreenHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.spheroDriver.green"
+                                    }
+                                }
+                            }
+                        },
+                        spheroBlueHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        func: "{app}.spheroDriver.blue"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             spheroDriver: {
                 type: "c2lc.spheroDriver"
             },
