@@ -21,7 +21,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.spheroDriver", {
         gradeNames: "fluid.modelComponent",
         bleUuids: {
-            bleService:          "22bb746f-2bb0-7554-2d6f-726568705327",
+            bleService: "22bb746f-2bb0-7554-2d6f-726568705327",
             antiDosChar: "22bb746f-2bbd-7554-2d6f-726568705327",
             robotControlService: "22bb746f-2ba0-7554-2d6f-726568705327",
             commandsChar: "22bb746f-2ba1-7554-2d6f-726568705327"
