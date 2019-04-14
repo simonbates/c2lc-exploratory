@@ -214,7 +214,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.red"
+                                        func: "{app}.spheroDriver.setRgbLed",
+                                        args: [0xFF, 0x00, 0x00]
                                     }
                                 }
                             }
@@ -224,7 +225,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.green"
+                                        func: "{app}.spheroDriver.setRgbLed",
+                                        args: [0x00, 0xFF, 0x00]
                                     }
                                 }
                             }
@@ -234,7 +236,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.blue"
+                                        func: "{app}.spheroDriver.setRgbLed",
+                                        args: [0x00, 0x00, 0xFF]
                                     }
                                 }
                             }
