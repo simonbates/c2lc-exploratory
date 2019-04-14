@@ -125,9 +125,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             togo.resolve();
         }).catch(function (error) { // eslint-disable-line dot-notation
             togo.reject(error);
-            // TODO: Move printing to the interpreter
-            console.log(error.name);
-            console.log(error.message);
         });
         return togo;
     };

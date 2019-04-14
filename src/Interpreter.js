@@ -110,6 +110,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 c2lc.interpreter.callActionHandlers(interpreter, actionHandlers).then(function () {
                     interpreter.applier.change("programCounter", interpreter.model.programCounter + 1);
                     togo.resolve();
+                }, function (error) {
+                    console.log(error.name);
+                    console.log(error.message);
+                    togo.reject(error);
                 });
             }
         }
