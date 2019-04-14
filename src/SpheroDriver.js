@@ -123,7 +123,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         var packet = c2lc.spheroDriver.buildPacket(commandOptions);
         spheroDriver.commandsChar.writeValue(packet).then(function () {
             togo.resolve();
-        }).catch(function (error) { // eslint-disable-line dot-notation
+        }, function (error) {
             togo.reject(error);
         });
         return togo;
