@@ -204,40 +204,39 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             interpreter: {
                 options: {
                     actions: {
-                        "red.sphero": "{that}.spheroRedHandler",
-                        "green.sphero": "{that}.spheroGreenHandler",
-                        "blue.sphero": "{that}.spheroBlueHandler"
+                        "forward.sphero": "{that}.spheroForwardHandler",
+                        "left.sphero": "{that}.spheroLeftHandler",
+                        "right.sphero": "{that}.spheroRightHandler"
                     },
                     components: {
-                        spheroRedHandler: {
+                        spheroForwardHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.setRgbLed",
-                                        args: [0xFF, 0x00, 0x00]
+                                        func: "{app}.spheroTurtle.forward"
                                     }
                                 }
                             }
                         },
-                        spheroGreenHandler: {
+                        spheroLeftHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.setRgbLed",
-                                        args: [0x00, 0xFF, 0x00]
+                                        func: "{app}.spheroTurtle.left",
+                                        args: [90]
                                     }
                                 }
                             }
                         },
-                        spheroBlueHandler: {
+                        spheroRightHandler: {
                             type: "c2lc.actionHandler",
                             options: {
                                 invokers: {
                                     handleAction: {
-                                        func: "{app}.spheroDriver.setRgbLed",
-                                        args: [0x00, 0x00, 0xFF]
+                                        func: "{app}.spheroTurtle.right",
+                                        agrs: [90]
                                     }
                                 }
                             }
@@ -245,8 +244,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     }
                 }
             },
-            spheroDriver: {
-                type: "c2lc.spheroDriver"
+            spheroTurtle: {
+                type: "c2lc.spheroTurtle"
             },
             spheroConnectControl: {
                 type: "c2lc.deviceConnectControl",
@@ -256,11 +255,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         connect: "Connect to Sphero"
                     },
                     model: {
-                        connectionState: "{spheroDriver}.model.connectionState"
+                        connectionState: "{spheroTurtle}.model.connectionState"
                     },
                     listeners: {
                         "onInitiateConnect.connectToSphero": {
-                            func: "{spheroDriver}.connect"
+                            func: "{spheroTurtle}.connect"
                         }
                     }
                 }

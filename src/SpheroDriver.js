@@ -45,20 +45,28 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     "{that}.applier"
                 ]
             },
-            sendCommand: {
-                funcName: "c2lc.spheroDriver.sendCommand",
+            setHeading: {
+                funcName: "c2lc.spheroDriver.setHeading",
                 args: [
                     "{that}",
-                    "{arguments}.0" // commandOptions
+                    "{arguments}.0" // heading (0-359)
                 ]
             },
             setRgbLed: {
                 funcName: "c2lc.spheroDriver.setRgbLed",
                 args: [
                     "{that}",
-                    "{arguments}.0", // red
-                    "{arguments}.1", // green
-                    "{arguments}.2" // blue
+                    "{arguments}.0", // red (0-255)
+                    "{arguments}.1", // green (0-255)
+                    "{arguments}.2" // blue (0-255)
+                ]
+            },
+            roll: {
+                funcName: "c2lc.spheroDriver.roll",
+                args: [
+                    "{that}",
+                    "{arguments}.0", // speed (0-255)
+                    "{arguments}.1" // heading (0-359)
                 ]
             }
         }
@@ -104,13 +112,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.spheroDriver.setAntiDos = function (antiDosChar) {
-        return antiDosChar.writeValue(new Uint8Array([
-            "0".charCodeAt(0),
-            "1".charCodeAt(0),
-            "1".charCodeAt(0),
-            "i".charCodeAt(0),
-            "3".charCodeAt(0)
-        ]));
+        return antiDosChar.writeValue((new TextEncoder()).encode("011i3"));
     };
 
     c2lc.spheroDriver.wake = function (wakeChar) {
@@ -159,6 +161,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     // Sphero Commands
 
+    c2lc.spheroDriver.setHeading = function (spheroDriver, heading) {
+        return c2lc.spheroDriver.sendCommand(spheroDriver, {
+            sop1: 0xFF,
+            sop2: 0xFE,
+            did: 0x02,
+            cid: 0x01,
+            seq: 0x00,
+            data: [(heading >> 8) & 0xFF, heading & 0xFF]
+        });
+    };
+
     c2lc.spheroDriver.setRgbLed = function (spheroDriver, red, green, blue) {
         return c2lc.spheroDriver.sendCommand(spheroDriver, {
             sop1: 0xFF,
@@ -167,6 +180,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             cid: 0x20,
             seq: 0x00,
             data: [red, green, blue, 0x00]
+        });
+    };
+
+    c2lc.spheroDriver.roll = function (spheroDriver, speed, heading) {
+        var state = 0x01;
+        return c2lc.spheroDriver.sendCommand(spheroDriver, {
+            sop1: 0xFF,
+            sop2: 0xFE,
+            did: 0x02,
+            cid: 0x30,
+            seq: 0x00,
+            data: [speed, (heading >> 8) & 0xFF, heading & 0xFF, state]
         });
     };
 
