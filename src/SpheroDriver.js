@@ -117,6 +117,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     c2lc.spheroDriver.sendCommand = function (spheroDriver, commandOptions) {
         var togo = fluid.promise();
         var packet = c2lc.spheroDriver.buildPacket(commandOptions);
+        // TODO: Use the Sphero Response Characteristic to know when a command has completed
         spheroDriver.commandsChar.writeValue(packet).then(function () {
             togo.resolve();
         }, function (error) {
