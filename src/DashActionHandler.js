@@ -8,6 +8,8 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
+// TODO: Rename to c2lc.bluetoothDeviceActionHandler
+
 (function () {
 
     "use strict";
