@@ -43,6 +43,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 funcName: "c2lc.spheroDriver.setHeading",
                 args: [
                     "{that}",
+                    "{that}.packetBuilder",
                     "{arguments}.0" // heading (0-359)
                 ]
             },
@@ -50,6 +51,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 funcName: "c2lc.spheroDriver.setRgbLed",
                 args: [
                     "{that}",
+                    "{that}.packetBuilder",
                     "{arguments}.0", // red (0-255)
                     "{arguments}.1", // green (0-255)
                     "{arguments}.2" // blue (0-255)
@@ -59,9 +61,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 funcName: "c2lc.spheroDriver.roll",
                 args: [
                     "{that}",
+                    "{that}.packetBuilder",
                     "{arguments}.0", // speed (0-255)
                     "{arguments}.1" // heading (0-359)
                 ]
+            }
+        },
+        components: {
+            packetBuilder: {
+                type: "c2lc.spheroPacketBuilder"
             }
         }
     });
@@ -114,9 +122,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     // Returns: A Promise representing completion of the command
-    c2lc.spheroDriver.sendCommand = function (spheroDriver, commandOptions) {
+    c2lc.spheroDriver.sendCommand = function (spheroDriver, packet) {
         var togo = fluid.promise();
-        var packet = c2lc.spheroDriver.buildPacket(commandOptions);
         // TODO: Use the Sphero Response Characteristic to know when a command has completed
         spheroDriver.commandsChar.writeValue(packet).then(function () {
             togo.resolve();
@@ -126,68 +133,21 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         return togo;
     };
 
-    c2lc.spheroDriver.buildPacket = function (commandOptions) {
-        var dataLength = commandOptions.data ? commandOptions.data.length : 0;
-        var packet = new Uint8Array(7 + dataLength);
-
-        packet[0] = commandOptions.sop1;
-        packet[1] = commandOptions.sop2;
-        packet[2] = commandOptions.did;
-        packet[3] = commandOptions.cid;
-        packet[4] = commandOptions.seq;
-        packet[5] = dataLength + 1;
-
-        for (var i = 0; i < dataLength; i++) {
-            packet[6 + i] = commandOptions.data[i];
-        }
-
-        packet[6 + dataLength] = c2lc.spheroDriver.calculateChecksum(packet, 2, 6 + dataLength);
-
-        return packet;
-    };
-
-    c2lc.spheroDriver.calculateChecksum = function (data, begin, end) {
-        var sum = 0;
-        for (var i = begin; i < end; i++) {
-            sum += data[i];
-        }
-        return (~sum) & 0xFF;
-    };
-
     // Sphero Commands
 
-    c2lc.spheroDriver.setHeading = function (spheroDriver, heading) {
-        return c2lc.spheroDriver.sendCommand(spheroDriver, {
-            sop1: 0xFF,
-            sop2: 0xFE,
-            did: 0x02,
-            cid: 0x01,
-            seq: 0x00,
-            data: [(heading >> 8) & 0xFF, heading & 0xFF]
-        });
+    c2lc.spheroDriver.setHeading = function (spheroDriver, packetBuilder,
+            heading) {
+        return c2lc.spheroDriver.sendCommand(spheroDriver, packetBuilder.setHeading(heading));
     };
 
-    c2lc.spheroDriver.setRgbLed = function (spheroDriver, red, green, blue) {
-        return c2lc.spheroDriver.sendCommand(spheroDriver, {
-            sop1: 0xFF,
-            sop2: 0xFE,
-            did: 0x02,
-            cid: 0x20,
-            seq: 0x00,
-            data: [red, green, blue, 0x00]
-        });
+    c2lc.spheroDriver.setRgbLed = function (spheroDriver, packetBuilder,
+            red, green, blue) {
+        return c2lc.spheroDriver.sendCommand(spheroDriver, packetBuilder.setRgbLed(red, green, blue));
     };
 
-    c2lc.spheroDriver.roll = function (spheroDriver, speed, heading) {
-        var state = 0x01;
-        return c2lc.spheroDriver.sendCommand(spheroDriver, {
-            sop1: 0xFF,
-            sop2: 0xFE,
-            did: 0x02,
-            cid: 0x30,
-            seq: 0x00,
-            data: [speed, (heading >> 8) & 0xFF, heading & 0xFF, state]
-        });
+    c2lc.spheroDriver.roll = function (spheroDriver, packetBuilder,
+            speed, heading) {
+        return c2lc.spheroDriver.sendCommand(spheroDriver, packetBuilder.roll(speed, heading));
     };
 
 })();
