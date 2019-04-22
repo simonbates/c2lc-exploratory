@@ -10,8 +10,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
 /* global Promise, Uint8Array */
 
-// TODO: Extract grade bluetoothDeviceDriver
-
 (function () {
 
     "use strict";
@@ -19,17 +17,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     var c2lc = fluid.registerNamespace("c2lc");
 
     fluid.defaults("c2lc.spheroDriver", {
-        gradeNames: "fluid.modelComponent",
+        gradeNames: "c2lc.bluetoothDeviceDriver",
         bleUuids: {
             bleService: "22bb746f-2bb0-7554-2d6f-726568705327",
             wakeChar: "22bb746f-2bbf-7554-2d6f-726568705327",
             antiDosChar: "22bb746f-2bbd-7554-2d6f-726568705327",
             robotControlService: "22bb746f-2ba0-7554-2d6f-726568705327",
             commandsChar: "22bb746f-2ba1-7554-2d6f-726568705327"
-        },
-        model: {
-            connectionState: "notConnected"
-            // Values: "notConnected", "connecting", "connected"
         },
         members: {
             wakeChar: null, // Will be set at connect
