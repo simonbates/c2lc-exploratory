@@ -17,7 +17,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         graphicsContainer: null, // To be provided
         interpreterControlsContainer: null, // To be provided
         textEditorContainer: null, // To be provided
-        dashConnectControlsContainer: null, // To be provided
+        dashConnectControlContainer: null, // To be provided
+        spheroConnectControlContainer: null, // To be provided
         model: {
             program: []
         },
@@ -27,6 +28,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     dashRobotIntegration: {
                         contextValue: "{c2lc.bluetoothApiIsAvailable}",
                         gradeNames: "c2lc.app.dashRobotIntegration"
+                    }
+                }
+            },
+            spheroRobotIntegration: {
+                checks: {
+                    spheroRobotIntegration: {
+                        contextValue: "{c2lc.bluetoothApiIsAvailable}",
+                        gradeNames: "c2lc.app.spheroRobotIntegration"
                     }
                 }
             }
@@ -138,30 +147,30 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         dashForwardHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "forward",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "forward"
                             }
                         },
                         dashLeftHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "left",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "left"
                             }
                         },
                         dashRightHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "right",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "right"
                             }
                         }
                     }
@@ -170,16 +179,85 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             dashDriver: {
                 type: "c2lc.dashDriver"
             },
-            dashConnectControls: {
-                type: "c2lc.dashConnectControls",
-                container: "{app}.options.dashConnectControlsContainer",
+            dashConnectControl: {
+                type: "c2lc.deviceConnectControl",
+                container: "{app}.options.dashConnectControlContainer",
                 options: {
+                    messages: {
+                        connect: "Connect to Dash"
+                    },
                     model: {
                         connectionState: "{dashDriver}.model.connectionState"
                     },
                     listeners: {
                         "onInitiateConnect.connectToDash": {
                             func: "{dashDriver}.connect"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("c2lc.app.spheroRobotIntegration", {
+        components: {
+            interpreter: {
+                options: {
+                    actions: {
+                        "forward.sphero": "{that}.spheroForwardHandler",
+                        "left.sphero": "{that}.spheroLeftHandler",
+                        "right.sphero": "{that}.spheroRightHandler"
+                    },
+                    components: {
+                        spheroForwardHandler: {
+                            type: "c2lc.bluetoothDeviceActionHandler",
+                            options: {
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "forward",
+                                args: [0x20, 1500]
+                            }
+                        },
+                        spheroLeftHandler: {
+                            type: "c2lc.bluetoothDeviceActionHandler",
+                            options: {
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "left",
+                                args: [90]
+                            }
+                        },
+                        spheroRightHandler: {
+                            type: "c2lc.bluetoothDeviceActionHandler",
+                            options: {
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "right",
+                                args: [90]
+                            }
+                        }
+                    }
+                }
+            },
+            spheroTurtle: {
+                type: "c2lc.spheroTurtle"
+            },
+            spheroConnectControl: {
+                type: "c2lc.deviceConnectControl",
+                container: "{app}.options.spheroConnectControlContainer",
+                options: {
+                    messages: {
+                        connect: "Connect to Sphero"
+                    },
+                    model: {
+                        connectionState: "{spheroTurtle}.model.connectionState"
+                    },
+                    listeners: {
+                        "onInitiateConnect.connectToSphero": {
+                            func: "{spheroTurtle}.connect"
                         }
                     }
                 }
