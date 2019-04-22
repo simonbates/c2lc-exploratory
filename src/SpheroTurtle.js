@@ -15,7 +15,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     var c2lc = fluid.registerNamespace("c2lc");
 
     fluid.defaults("c2lc.spheroTurtle", {
-        gradeNames: "fluid.modelComponent",
+        gradeNames: "c2lc.bluetoothDevice",
         model: {
             connectionState: "{spheroDriver}.model.connectionState",
             headingDegrees: 0

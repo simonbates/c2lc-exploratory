@@ -12,7 +12,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     "use strict";
 
-    fluid.defaults("c2lc.bluetoothDeviceDriver", {
+    fluid.defaults("c2lc.bluetoothDevice", {
         gradeNames: "fluid.modelComponent",
         model: {
             connectionState: "notConnected"

@@ -17,7 +17,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     var c2lc = fluid.registerNamespace("c2lc");
 
     fluid.defaults("c2lc.spheroDriver", {
-        gradeNames: "c2lc.bluetoothDeviceDriver",
+        gradeNames: "c2lc.bluetoothDevice",
         bleUuids: {
             bleService: "22bb746f-2bb0-7554-2d6f-726568705327",
             wakeChar: "22bb746f-2bbf-7554-2d6f-726568705327",

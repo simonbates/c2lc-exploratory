@@ -17,7 +17,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     var c2lc = fluid.registerNamespace("c2lc");
 
     fluid.defaults("c2lc.dashDriver", {
-        gradeNames: "c2lc.bluetoothDeviceDriver",
+        gradeNames: "c2lc.bluetoothDevice",
         dashServiceUuid: "af237777-879d-6186-1f49-deca0e85d9c1",
         dashCharCommandUuid: "af230002-879d-6186-1f49-deca0e85d9c1",
         members: {

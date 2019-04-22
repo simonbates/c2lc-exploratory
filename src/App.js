@@ -147,30 +147,30 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         dashForwardHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "forward",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "forward"
                             }
                         },
                         dashLeftHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "left",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "left"
                             }
                         },
                         dashRightHandler: {
-                            type: "c2lc.dashActionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                operation: "right",
                                 components: {
-                                    dashDriver: "{app}.dashDriver"
-                                }
+                                    bluetoothDevice: "{app}.dashDriver"
+                                },
+                                method: "right"
                             }
                         }
                     }
@@ -210,35 +210,32 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         spheroForwardHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.spheroTurtle.forward"
-                                    }
-                                }
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "forward"
                             }
                         },
                         spheroLeftHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.spheroTurtle.left",
-                                        args: [90]
-                                    }
-                                }
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "left",
+                                args: [90]
                             }
                         },
                         spheroRightHandler: {
-                            type: "c2lc.actionHandler",
+                            type: "c2lc.bluetoothDeviceActionHandler",
                             options: {
-                                invokers: {
-                                    handleAction: {
-                                        func: "{app}.spheroTurtle.right",
-                                        agrs: [90]
-                                    }
-                                }
+                                components: {
+                                    bluetoothDevice: "{app}.spheroTurtle"
+                                },
+                                method: "right",
+                                args: [90]
                             }
                         }
                     }
