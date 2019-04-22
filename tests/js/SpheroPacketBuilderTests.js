@@ -18,7 +18,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     jqUnit.module("SpheroPacketBuilder Tests");
 
-    jqUnit.test("c2lc.spheroPacketBuilder.setHeading", function () {
+    jqUnit.test("setHeading", function () {
         jqUnit.expect(2);
 
         var packetBuilder = c2lc.spheroPacketBuilder();
@@ -42,7 +42,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             packetBuilder.setHeading(359));
     });
 
-    jqUnit.test("c2lc.spheroPacketBuilder.setRgbLed", function () {
+    jqUnit.test("setRgbLed", function () {
         jqUnit.expect(5);
 
         var packetBuilder = c2lc.spheroPacketBuilder();
@@ -103,7 +103,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             packetBuilder.setRgbLed(0, 0, 255));
     });
 
-    jqUnit.test("c2lc.spheroPacketBuilder.roll", function () {
+    jqUnit.test("roll", function () {
         jqUnit.expect(2);
 
         var packetBuilder = c2lc.spheroPacketBuilder();
