@@ -25,8 +25,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 func: "{spheroDriver}.connect"
             },
             forward: {
-                func: "{spheroDriver}.roll",
-                args: [0x20, "{that}.model.headingDegrees"]
+                funcName: "c2lc.spheroTurtle.forward",
+                args: [
+                    "{that}.spheroDriver",
+                    "{that}.model.headingDegrees",
+                    "{arguments}.0", // speed (0-255)
+                    "{arguments}.1" // time in ms
+                ]
             },
             left: {
                 funcName: "c2lc.spheroTurtle.left",
@@ -49,6 +54,18 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         }
     });
+
+    c2lc.spheroTurtle.forward = function (spheroDriver, heading, speed, timeMs) {
+        var togo = fluid.promise();
+        spheroDriver.roll(speed, heading).then(function () {
+            setTimeout(function () {
+                spheroDriver.roll(0, heading).then(function () {
+                    togo.resolve();
+                });
+            }, timeMs);
+        });
+        return togo;
+    };
 
     c2lc.spheroTurtle.left = function (spheroTurtle, amountDegrees) {
         spheroTurtle.applier.change("headingDegrees", c2lc.math.wrap(0, 360, spheroTurtle.model.headingDegrees - amountDegrees));

@@ -215,7 +215,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                 components: {
                                     bluetoothDevice: "{app}.spheroTurtle"
                                 },
-                                method: "forward"
+                                method: "forward",
+                                args: [0x20, 1500]
                             }
                         },
                         spheroLeftHandler: {
