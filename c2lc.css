@@ -16,10 +16,6 @@ button {
     color: #222;
 }
 
-.c2lc-blockEditor .material-icons {
-    font-size: 72px;
-}
-
 .c2lc-container {
     display: flex;
     flex-direction: row;
@@ -56,6 +52,21 @@ button {
 .c2lc-turtleGraphics-turtle {
     fill: #2BB673;
     stroke-width: 0.3;
+}
+
+.c2lc-blockEditor {
+    width: 30rem;
+    margin-bottom: 0.5rem;
+}
+
+.c2lc-blockEditor .material-icons {
+    font-size: 72px;
+}
+
+.c2lc-programBlockEditor-block {
+    display: inline-block;
+    margin: 0 0.5rem 0.5rem 0;
+    border: 2px solid #000;
 }
 
 .c2lc-textEditor {

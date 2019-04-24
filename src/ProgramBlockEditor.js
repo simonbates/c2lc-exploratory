@@ -29,14 +29,14 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 markup: "<i class='material-icons'>arrow_forward</i>"
             }
         },
+        commandPalette: ["forward", "left", "right"],
         model: {
             program: []
         },
         listeners: {
             "onCreate.renderBlockEditor": {
-                "this": "{that}.container",
-                method: "html",
-                args: ["{that}.options.markup.blockEditor"]
+                funcName: "c2lc.programBlockEditor.render",
+                args: ["{that}"]
             }
         },
         modelListeners: {
@@ -54,9 +54,29 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             programBlocks: ".c2lc-programBlockEditor-programBlocks"
         },
         markup: {
-            blockEditor: "<div class='c2lc-programBlockEditor-programBlocks'></div>"
+            blockEditor: "<div clas='c2lc-programBlockEditor-commandPalette'>%commandPaletteContents</div><div class='c2lc-programBlockEditor-programBlocks'></div>",
+            block: "<div class='c2lc-programBlockEditor-block'>%image</div>"
         }
     });
+
+    c2lc.programBlockEditor.render = function (programBlockEditor) {
+        var commandPaletteContents = [];
+        fluid.each(programBlockEditor.options.commandPalette, function (command) {
+            var block = fluid.stringTemplate(
+                programBlockEditor.options.markup.block,
+                {
+                    image: programBlockEditor.options.actionBlocks[command].markup
+                }
+            );
+            commandPaletteContents.push(block);
+        });
+        programBlockEditor.container.html(fluid.stringTemplate(
+            programBlockEditor.options.markup.blockEditor,
+            {
+                commandPaletteContents: commandPaletteContents.join("")
+            }
+        ));
+    };
 
     c2lc.programBlockEditor.updateBlocksFromProgram = function (programBlockEditor, program, blocksElem) {
 
@@ -64,7 +84,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         blocksElem.empty();
         fluid.each(program, function (programAction) {
-            blocksElem.append(programBlockEditor.options.actionBlocks[programAction].markup);
+            var block = fluid.stringTemplate(
+                programBlockEditor.options.markup.block,
+                {
+                    image: programBlockEditor.options.actionBlocks[programAction].markup
+                }
+            );
+            blocksElem.append(block);
         });
     };
 
