@@ -54,8 +54,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             programBlocks: ".c2lc-programBlockEditor-programBlocks"
         },
         markup: {
-            blockEditor: "<div clas='c2lc-programBlockEditor-commandPalette'>%commandPaletteContents</div><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block'>%image</div>"
+            blockEditor: "<h2>Commands</h2><div clas='c2lc-programBlockEditor-commandPalette'>%commandPaletteContents</div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
+            block: "<div class='c2lc-programBlockEditor-block' data-c2lc-programBlockEditor-action='%actionName'>%image</div>"
         }
     });
 
@@ -65,6 +65,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             var block = fluid.stringTemplate(
                 programBlockEditor.options.markup.block,
                 {
+                    actionName: command,
                     image: programBlockEditor.options.actionBlocks[command].markup
                 }
             );
@@ -87,6 +88,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             var block = fluid.stringTemplate(
                 programBlockEditor.options.markup.block,
                 {
+                    actionName: programAction,
                     image: programBlockEditor.options.actionBlocks[programAction].markup
                 }
             );
