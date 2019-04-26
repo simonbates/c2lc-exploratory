@@ -20,18 +20,23 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         gradeNames: "fluid.viewComponent",
         actionBlocks: {
             forward: {
-                markup: "<i class='material-icons'>arrow_upward</i>"
+                iconName: "arrow_upward"
             },
             left: {
-                markup: "<i class='material-icons'>arrow_back</i>"
+                iconName: "arrow_back"
             },
             right: {
-                markup: "<i class='material-icons'>arrow_forward</i>"
+                iconName: "arrow_forward"
             }
         },
         commandPalette: ["forward", "left", "right"],
         model: {
             program: []
+        },
+        invokers: {
+            blockClickHandler: {
+                funcName: "c2lc.programBlockEditor.blockClickHandler"
+            }
         },
         listeners: {
             "onCreate.renderBlockEditor": {
@@ -54,29 +59,21 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             programBlocks: ".c2lc-programBlockEditor-programBlocks"
         },
         markup: {
-            blockEditor: "<h2>Commands</h2><div clas='c2lc-programBlockEditor-commandPalette'>%commandPaletteContents</div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block' data-c2lc-programBlockEditor-action='%actionName'>%image</div>"
+            blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
+            block: "<div class='c2lc-programBlockEditor-block-outer'><div class='c2lc-programBlockEditor-block' data-c2lc-programBlockEditor-action='%actionName'><i class='material-icons'>%iconName</i></div></div>"
         }
     });
 
     c2lc.programBlockEditor.render = function (programBlockEditor) {
-        var commandPaletteContents = [];
+        programBlockEditor.container.html(programBlockEditor.options.markup.blockEditor);
         fluid.each(programBlockEditor.options.commandPalette, function (command) {
-            var block = fluid.stringTemplate(
-                programBlockEditor.options.markup.block,
-                {
-                    actionName: command,
-                    image: programBlockEditor.options.actionBlocks[command].markup
-                }
+            var blockElem = c2lc.programBlockEditor.makeBlockElem(
+                programBlockEditor,
+                command,
+                programBlockEditor.blockClickHandler
             );
-            commandPaletteContents.push(block);
+            $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
         });
-        programBlockEditor.container.html(fluid.stringTemplate(
-            programBlockEditor.options.markup.blockEditor,
-            {
-                commandPaletteContents: commandPaletteContents.join("")
-            }
-        ));
     };
 
     c2lc.programBlockEditor.updateBlocksFromProgram = function (programBlockEditor, program, blocksElem) {
@@ -85,15 +82,31 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
         blocksElem.empty();
         fluid.each(program, function (programAction) {
-            var block = fluid.stringTemplate(
-                programBlockEditor.options.markup.block,
-                {
-                    actionName: programAction,
-                    image: programBlockEditor.options.actionBlocks[programAction].markup
-                }
+            var blockElem = c2lc.programBlockEditor.makeBlockElem(
+                programBlockEditor,
+                programAction,
+                programBlockEditor.blockClickHandler
             );
-            blocksElem.append(block);
+            blocksElem.append(blockElem);
         });
+    };
+
+    c2lc.programBlockEditor.makeBlockElem = function (programBlockEditor, actionName, clickHandler) {
+        var blockElem = $(fluid.stringTemplate(
+            programBlockEditor.options.markup.block,
+            {
+                actionName: actionName,
+                iconName: programBlockEditor.options.actionBlocks[actionName].iconName
+            }
+        ));
+        blockElem.click(clickHandler);
+        return blockElem;
+    };
+
+    c2lc.programBlockEditor.blockClickHandler = function (evt) {
+        // TODO: Only add select on blocks in the command palette
+        // TODO: Deselect other commands
+        $(evt.target).parents(".c2lc-programBlockEditor-block-outer").toggleClass("c2lc-programBlockEditor-block-selected");
     };
 
 })();
