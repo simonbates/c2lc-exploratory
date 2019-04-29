@@ -74,10 +74,6 @@ button {
     color: #000;
 }
 
-.c2lc-programBlockEditor-block:hover {
-    background-color: #DDD;
-}
-
 .c2lc-programBlockEditor-block-outer {
     display: inline-block;
     margin: 0 0.5rem 0.5rem 0;

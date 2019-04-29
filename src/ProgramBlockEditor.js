@@ -34,8 +34,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             program: []
         },
         invokers: {
-            blockClickHandler: {
-                funcName: "c2lc.programBlockEditor.blockClickHandler"
+            commandClickHandler: {
+                funcName: "c2lc.programBlockEditor.commandClickHandler",
+                args: [
+                    "{that}.dom.commandPalette",
+                    "{arguments}.0" // Event
+                ]
+            },
+            programBlockClickHandler: {
+                funcName: "c2lc.programBlockEditor.programBlockClickHandler"
             }
         },
         listeners: {
@@ -56,6 +63,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         },
         selectors: {
+            commandPalette: ".c2lc-programBlockEditor-commandPalette",
             programBlocks: ".c2lc-programBlockEditor-programBlocks"
         },
         markup: {
@@ -70,7 +78,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
                 command,
-                programBlockEditor.blockClickHandler
+                programBlockEditor.commandClickHandler
             );
             $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
         });
@@ -85,7 +93,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
                 programAction,
-                programBlockEditor.blockClickHandler
+                programBlockEditor.programBlockClickHandler
             );
             blocksElem.append(blockElem);
         });
@@ -103,10 +111,21 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         return blockElem;
     };
 
-    c2lc.programBlockEditor.blockClickHandler = function (evt) {
-        // TODO: Only add select on blocks in the command palette
-        // TODO: Deselect other commands
-        $(evt.target).parents(".c2lc-programBlockEditor-block-outer").toggleClass("c2lc-programBlockEditor-block-selected");
+    c2lc.programBlockEditor.commandClickHandler = function (commandPalette, evt) {
+        var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block-outer").first();
+        if (targetBlockOuter.length === 1) {
+            commandPalette.find(".c2lc-programBlockEditor-block-outer").each(function (i, elem) {
+                if (elem === targetBlockOuter.get(0)) {
+                    targetBlockOuter.toggleClass("c2lc-programBlockEditor-block-selected");
+                } else {
+                    $(elem).removeClass("c2lc-programBlockEditor-block-selected");
+                }
+            });
+        }
+    };
+
+    c2lc.programBlockEditor.programBlockClickHandler = function () {
+        console.log("CLICK");
     };
 
 })();
