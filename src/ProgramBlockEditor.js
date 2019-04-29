@@ -31,18 +31,24 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         commandPalette: ["forward", "left", "right"],
         model: {
-            program: []
+            program: [],
+            selectedCommand: null // Initially no command is selected
         },
         invokers: {
             commandClickHandler: {
                 funcName: "c2lc.programBlockEditor.commandClickHandler",
                 args: [
-                    "{that}.dom.commandPalette",
+                    "{that}.model.selectedCommand",
+                    "{that}.applier",
                     "{arguments}.0" // Event
                 ]
             },
             programBlockClickHandler: {
-                funcName: "c2lc.programBlockEditor.programBlockClickHandler"
+                funcName: "c2lc.programBlockEditor.programBlockClickHandler",
+                args: [
+                    "{that}",
+                    "{arguments}.0" // Event
+                ]
             }
         },
         listeners: {
@@ -60,6 +66,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     "{that}.dom.programBlocks"
                 ],
                 excludeSource: ["init"]
+            },
+            selectedCommand: {
+                funcName: "c2lc.programBlockEditor.updateSelectedCommand",
+                args: ["{that}.dom.commandPalette", "{change}.value"]
             }
         },
         selectors: {
@@ -68,7 +78,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         markup: {
             blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block-outer'><div class='c2lc-programBlockEditor-block' data-c2lc-programBlockEditor-action='%actionName'><i class='material-icons'>%iconName</i></div></div>"
+            block: "<div class='c2lc-programBlockEditor-block-outer' data-c2lc-programblockeditor-action='%actionName'><div class='c2lc-programBlockEditor-block'><i class='material-icons'>%iconName</i></div></div>"
         }
     });
 
@@ -89,13 +99,24 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         // TODO: Don't empty and recreate the blocks as the user might have focus on one of them. Edit instead.
 
         blocksElem.empty();
-        fluid.each(program, function (programAction) {
+        fluid.each(program, function (programAction, i) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
                 programAction,
                 programBlockEditor.programBlockClickHandler
             );
+            blockElem.attr("data-c2lc-programblockeditor-index", i);
             blocksElem.append(blockElem);
+        });
+    };
+
+    c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette, selectedCommand) {
+        commandPalette.find(".c2lc-programBlockEditor-block-outer").each(function (i, elem) {
+            if (selectedCommand && (elem.dataset.c2lcProgramblockeditorAction === selectedCommand)) {
+                $(elem).addClass("c2lc-programBlockEditor-block-selected");
+            } else {
+                $(elem).removeClass("c2lc-programBlockEditor-block-selected");
+            }
         });
     };
 
@@ -111,21 +132,29 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         return blockElem;
     };
 
-    c2lc.programBlockEditor.commandClickHandler = function (commandPalette, evt) {
+    c2lc.programBlockEditor.commandClickHandler = function (currentSelectedCommand, applier, evt) {
         var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block-outer").first();
         if (targetBlockOuter.length === 1) {
-            commandPalette.find(".c2lc-programBlockEditor-block-outer").each(function (i, elem) {
-                if (elem === targetBlockOuter.get(0)) {
-                    targetBlockOuter.toggleClass("c2lc-programBlockEditor-block-selected");
-                } else {
-                    $(elem).removeClass("c2lc-programBlockEditor-block-selected");
-                }
-            });
+            var newSelectedCommand = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorAction;
+            if (newSelectedCommand === currentSelectedCommand) {
+                // If we click the existing selected command, toggle it
+                applier.change("selectedCommand", null);
+            } else {
+                applier.change("selectedCommand", newSelectedCommand);
+            }
         }
     };
 
-    c2lc.programBlockEditor.programBlockClickHandler = function () {
-        console.log("CLICK");
+    c2lc.programBlockEditor.programBlockClickHandler = function (programBlockEditor, evt) {
+        if (programBlockEditor.model.selectedCommand) {
+            var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block-outer").first();
+            if (targetBlockOuter.length === 1) {
+                var program = fluid.makeArray(programBlockEditor.model.program);
+                var targetIndex = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex;
+                program[targetIndex] = programBlockEditor.model.selectedCommand;
+                programBlockEditor.applier.change("program", program);
+            }
+        }
     };
 
 })();
