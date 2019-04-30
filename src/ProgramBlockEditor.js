@@ -78,7 +78,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         markup: {
             blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block-outer' data-c2lc-programblockeditor-action='%actionName'><div class='c2lc-programBlockEditor-block'><i class='material-icons'>%iconName</i></div></div>"
+            block: "<div class='c2lc-programBlockEditor-block' data-c2lc-programblockeditor-action='%actionName'><div class='c2lc-programBlockEditor-block-inner'><i class='material-icons'>%iconName</i></div></div>"
         }
     });
 
@@ -111,7 +111,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette, selectedCommand) {
-        commandPalette.find(".c2lc-programBlockEditor-block-outer").each(function (i, elem) {
+        commandPalette.find(".c2lc-programBlockEditor-block").each(function (i, elem) {
             if (selectedCommand && (elem.dataset.c2lcProgramblockeditorAction === selectedCommand)) {
                 $(elem).addClass("c2lc-programBlockEditor-block-selected");
             } else {
@@ -133,7 +133,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     };
 
     c2lc.programBlockEditor.commandClickHandler = function (currentSelectedCommand, applier, evt) {
-        var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block-outer").first();
+        var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
         if (targetBlockOuter.length === 1) {
             var newSelectedCommand = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorAction;
             if (newSelectedCommand === currentSelectedCommand) {
@@ -147,7 +147,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     c2lc.programBlockEditor.programBlockClickHandler = function (programBlockEditor, evt) {
         if (programBlockEditor.model.selectedCommand) {
-            var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block-outer").first();
+            var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
             if (targetBlockOuter.length === 1) {
                 var program = fluid.makeArray(programBlockEditor.model.program);
                 var targetIndex = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex;
