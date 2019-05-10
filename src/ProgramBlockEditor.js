@@ -8,30 +8,45 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
+/*
+SVG icons are from https://github.com/google/material-design-icons
+
+Licensed under the Apache License 2.0
+
+Icons used:
+
+- https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_upward_48px.svg
+- https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_back_48px.svg
+- https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_forward_48px.svg
+- https://github.com/google/material-design-icons/blob/master/action/svg/production/ic_delete_48px.svg
+*/
+
 (function () {
 
     "use strict";
 
     var c2lc = fluid.registerNamespace("c2lc");
 
-    // TODO: Use SVG and custom alt text for block images
-
     fluid.defaults("c2lc.programBlockEditor", {
         gradeNames: "fluid.viewComponent",
         actions: {
             forward: {
-                iconName: "arrow_upward"
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M8 24l2.83 2.83L22 15.66V40h4V15.66l11.17 11.17L40 24 24 8 8 24z'/></svg>",
+                label: "Forward"
             },
             left: {
-                iconName: "arrow_back"
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z'/></svg>",
+                label: "Left"
             },
             right: {
-                iconName: "arrow_forward"
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M24 8l-2.83 2.83L32.34 22H8v4h24.34L21.17 37.17 24 40l16-16z'/></svg>",
+                label: "Right"
             }
         },
         editorCommands: {
             delete: {
-                iconName: "delete",
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M12 38c0 2.21 1.79 4 4 4h16c2.21 0 4-1.79 4-4V14H12v24zM38 8h-7l-2-2H19l-2 2h-7v4h28V8z'/></svg>",
+                label: "Delete",
                 handler: "{that}.deleteHandler"
             }
         },
@@ -101,7 +116,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         },
         markup: {
             blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block'><div class='c2lc-programBlockEditor-block-inner'><i class='material-icons'>%iconName</i></div></div>"
+            block: "<div class='c2lc-programBlockEditor-block'><div class='c2lc-programBlockEditor-block-inner'><span role='img' aria-label='%label'>%svg</span></div></div>"
         }
     });
 
@@ -110,7 +125,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         fluid.each(programBlockEditor.options.commandPalette.actions, function (action) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
-                programBlockEditor.options.actions[action].iconName,
+                programBlockEditor.options.actions[action],
                 programBlockEditor.commandClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-commandtype", "action");
@@ -120,7 +135,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         fluid.each(programBlockEditor.options.commandPalette.editorCommands, function (editorCommand) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
-                programBlockEditor.options.editorCommands[editorCommand].iconName,
+                programBlockEditor.options.editorCommands[editorCommand],
                 programBlockEditor.commandClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-commandtype", "editorCommand");
@@ -129,11 +144,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     };
 
-    c2lc.programBlockEditor.makeBlockElem = function (programBlockEditor, iconName, clickHandler) {
+    c2lc.programBlockEditor.makeBlockElem = function (programBlockEditor, blockOptions, clickHandler) {
         var blockElem = $(fluid.stringTemplate(
             programBlockEditor.options.markup.block,
             {
-                iconName: iconName
+                svg: blockOptions.svg,
+                label: blockOptions.label
             }
         ));
         blockElem.click(clickHandler);
@@ -148,7 +164,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         fluid.each(program, function (action, i) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
-                programBlockEditor.options.actions[action].iconName,
+                programBlockEditor.options.actions[action],
                 programBlockEditor.programBlockClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-action", action);
