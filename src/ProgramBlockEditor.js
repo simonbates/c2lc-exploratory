@@ -41,6 +41,10 @@ Icons used:
             right: {
                 svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M24 8l-2.83 2.83L32.34 22H8v4h24.34L21.17 37.17 24 40l16-16z'/></svg>",
                 label: "Right"
+            },
+            none: {
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 0 0'></svg>",
+                label: "None"
             }
         },
         editorCommands: {
@@ -54,6 +58,7 @@ Icons used:
             actions: ["forward", "left", "right"],
             editorCommands: ["delete"]
         },
+        minNumProgramSteps: 10,
         insertMode: "overwrite", // "insert" or "overwrite"
         model: {
             program: [],
@@ -122,6 +127,9 @@ Icons used:
 
     c2lc.programBlockEditor.render = function (programBlockEditor) {
         programBlockEditor.container.html(programBlockEditor.options.markup.blockEditor);
+
+        // Render actions
+
         fluid.each(programBlockEditor.options.commandPalette.actions, function (action) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
@@ -132,6 +140,9 @@ Icons used:
             blockElem.attr("data-c2lc-programblockeditor-commandname", action);
             $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
         });
+
+        // Render editor commands
+
         fluid.each(programBlockEditor.options.commandPalette.editorCommands, function (editorCommand) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
@@ -142,6 +153,15 @@ Icons used:
             blockElem.attr("data-c2lc-programblockeditor-commandname", editorCommand);
             $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
         });
+
+        // Render program
+
+        c2lc.programBlockEditor.updateBlocksFromProgram(
+            programBlockEditor,
+            programBlockEditor.model.program,
+            $(programBlockEditor.options.selectors.programBlocks,
+                programBlockEditor.container)
+        );
     };
 
     c2lc.programBlockEditor.makeBlockElem = function (programBlockEditor, blockOptions, clickHandler) {
@@ -161,6 +181,7 @@ Icons used:
         // TODO: Don't empty and recreate the blocks as the user might have focus on one of them. Edit instead.
 
         blocksElem.empty();
+
         fluid.each(program, function (action, i) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
@@ -171,6 +192,23 @@ Icons used:
             blockElem.attr("data-c2lc-programblockeditor-index", i);
             blocksElem.append(blockElem);
         });
+
+        // Draw empty program steps, always adding at least one
+
+        var numEmptySteps = programBlockEditor.options.minNumProgramSteps > program.length ? programBlockEditor.options.minNumProgramSteps - program.length : 1;
+
+        for (var i = 0; i < numEmptySteps; i++) {
+            var blockElem = c2lc.programBlockEditor.makeBlockElem(
+                programBlockEditor,
+                // eslint-disable-next-line dot-notation
+                programBlockEditor.options.actions["none"],
+                programBlockEditor.programBlockClickHandler
+            );
+            blockElem.attr("data-c2lc-programblockeditor-action", "none");
+            blockElem.attr("data-c2lc-programblockeditor-index",
+                program.length + i);
+            blocksElem.append(blockElem);
+        }
     };
 
     c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette, selectedCommand) {
@@ -208,7 +246,7 @@ Icons used:
         if (selectedCommand) {
             var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
             if (targetBlockOuter.length === 1) {
-                var targetIndex = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex;
+                var targetIndex = parseInt(targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex, 10);
                 c2lc.programBlockEditor.doCommand(programBlockEditor, selectedCommand, targetIndex);
             }
         }
@@ -228,14 +266,22 @@ Icons used:
 
     c2lc.programBlockEditor.insertProgramStep = function (programBlockEditor, targetIndex, newAction) {
         var program = fluid.makeArray(programBlockEditor.model.program);
+        c2lc.programBlockEditor.expandProgram(program, targetIndex);
         program.splice(targetIndex, 0, newAction);
         programBlockEditor.applier.change("program", program);
     };
 
     c2lc.programBlockEditor.overwriteProgramStep = function (programBlockEditor, targetIndex, newAction) {
         var program = fluid.makeArray(programBlockEditor.model.program);
+        c2lc.programBlockEditor.expandProgram(program, targetIndex + 1);
         program[targetIndex] = newAction;
         programBlockEditor.applier.change("program", program);
+    };
+
+    c2lc.programBlockEditor.expandProgram = function (program, length) {
+        while (program.length < length) {
+            program.push("none");
+        }
     };
 
     c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
