@@ -39,6 +39,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             actions: ["forward", "left", "right"],
             editorCommands: ["delete"]
         },
+        insertMode: "overwrite", // "insert" or "overwrite"
         model: {
             program: [],
             selectedCommand: null // Initially no command is selected
@@ -192,15 +193,33 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
             if (targetBlockOuter.length === 1) {
                 var targetIndex = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex;
-                if (selectedCommand.type === "action") {
-                    var program = fluid.makeArray(programBlockEditor.model.program);
-                    program[targetIndex] = selectedCommand.name;
-                    programBlockEditor.applier.change("program", program);
-                } else if (selectedCommand.type === "editorCommand") {
-                    programBlockEditor.options.editorCommands[selectedCommand.name].handler.apply(programBlockEditor, [targetIndex]);
-                }
+                c2lc.programBlockEditor.doCommand(programBlockEditor, selectedCommand, targetIndex);
             }
         }
+    };
+
+    c2lc.programBlockEditor.doCommand = function (programBlockEditor, command, targetIndex) {
+        if (command.type === "action") {
+            if (programBlockEditor.options.insertMode === "insert") {
+                c2lc.programBlockEditor.insertProgramStep(programBlockEditor, targetIndex, command.name);
+            } else if (programBlockEditor.options.insertMode === "overwrite") {
+                c2lc.programBlockEditor.overwriteProgramStep(programBlockEditor, targetIndex, command.name);
+            }
+        } else if (command.type === "editorCommand") {
+            programBlockEditor.options.editorCommands[command.name].handler.apply(programBlockEditor, [targetIndex]);
+        }
+    };
+
+    c2lc.programBlockEditor.insertProgramStep = function (programBlockEditor, targetIndex, newAction) {
+        var program = fluid.makeArray(programBlockEditor.model.program);
+        program.splice(targetIndex, 0, newAction);
+        programBlockEditor.applier.change("program", program);
+    };
+
+    c2lc.programBlockEditor.overwriteProgramStep = function (programBlockEditor, targetIndex, newAction) {
+        var program = fluid.makeArray(programBlockEditor.model.program);
+        program[targetIndex] = newAction;
+        programBlockEditor.applier.change("program", program);
     };
 
     c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
