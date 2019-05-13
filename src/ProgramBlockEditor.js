@@ -18,6 +18,7 @@ Icons used:
 - https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_upward_48px.svg
 - https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_back_48px.svg
 - https://github.com/google/material-design-icons/blob/master/navigation/svg/production/ic_arrow_forward_48px.svg
+- https://github.com/google/material-design-icons/blob/master/content/svg/production/ic_add_48px.svg
 - https://github.com/google/material-design-icons/blob/master/action/svg/production/ic_delete_48px.svg
 */
 
@@ -48,6 +49,11 @@ Icons used:
             }
         },
         editorCommands: {
+            insertSpace: {
+                svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z'/></svg>",
+                label: "Insert Space",
+                handler: "{that}.insertSpaceHandler"
+            },
             delete: {
                 svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M12 38c0 2.21 1.79 4 4 4h16c2.21 0 4-1.79 4-4V14H12v24zM38 8h-7l-2-2H19l-2 2h-7v4h28V8z'/></svg>",
                 label: "Delete",
@@ -56,7 +62,7 @@ Icons used:
         },
         commandPalette: {
             actions: ["forward", "left", "right"],
-            editorCommands: ["delete"]
+            editorCommands: ["insertSpace", "delete"]
         },
         minVisibleProgramSteps: 10,
         insertMode: "overwrite", // "insert" or "overwrite"
@@ -84,6 +90,13 @@ Icons used:
                     "{that}",
                     "{that}.model.selectedCommand",
                     "{arguments}.0" // Event
+                ]
+            },
+            insertSpaceHandler: {
+                funcName: "c2lc.programBlockEditor.insertSpaceHandler",
+                args: [
+                    "{that}",
+                    "{arguments}.0" // Index
                 ]
             },
             deleteHandler: {
@@ -266,6 +279,12 @@ Icons used:
         } else if (command.type === "editorCommand") {
             programBlockEditor.options.editorCommands[command.name].handler.apply(programBlockEditor, [targetIndex]);
         }
+    };
+
+    c2lc.programBlockEditor.insertSpaceHandler = function (programBlockEditor, index) {
+        programBlockEditor.applier.change("program",
+            c2lc.programUtils.insert(programBlockEditor.model.program,
+                index, "none", "none"));
     };
 
     c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
