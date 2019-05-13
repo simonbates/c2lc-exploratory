@@ -282,15 +282,20 @@ Icons used:
     };
 
     c2lc.programBlockEditor.insertSpaceHandler = function (programBlockEditor, index) {
-        programBlockEditor.applier.change("program",
-            c2lc.programUtils.insert(programBlockEditor.model.program,
-                index, "none", "none"));
+        if (index < programBlockEditor.model.program.length) {
+            programBlockEditor.applier.change("program",
+                c2lc.programUtils.insert(programBlockEditor.model.program,
+                    index, "none", "none"));
+        }
     };
 
     c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
         programBlockEditor.applier.change("program",
-            c2lc.programUtils.deleteStep(programBlockEditor.model.program,
-                targetIndex));
+            c2lc.programUtils.trimEnd(
+                c2lc.programUtils.deleteStep(programBlockEditor.model.program,
+                    targetIndex),
+                "none"
+            ));
     };
 
 })();

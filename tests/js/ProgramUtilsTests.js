@@ -27,6 +27,49 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     jqUnit.module("Program Utils Tests");
 
+    jqUnit.test("c2lc.programUtils.deleteStep", function () {
+        jqUnit.expect(28);
+
+        var testCases = [
+            { input: [], index: 0, expected: [] },
+            { input: [], index: 2, expected: [] },
+            { input: ["foo"], index: 0, expected: [] },
+            { input: ["foo"], index: 1, expected: ["foo"] },
+            { input: ["foo"], index: 2, expected: ["foo"] },
+            { input: ["foo", "bar", "baz"], index: 0, expected: ["bar", "baz"] },
+            { input: ["foo", "bar", "baz"], index: 1, expected: ["foo", "baz"] }
+        ];
+
+        fluid.each(testCases, function (testCase) {
+            var input = fluid.makeArray(testCase.input);
+            var result = c2lc.programUtils.deleteStep(input, testCase.index);
+            c2lc.tests.checkProgramEdit(testCase.input, testCase.expected,
+                input, result);
+        });
+    });
+
+    jqUnit.test("c2lc.programUtils.expandProgram", function () {
+        jqUnit.expect(28);
+
+        var testCases = [
+            { input: [], length: 0, expected: [] },
+            { input: [], length: 1, expected: ["fill1"] },
+            { input: [], length: 2, expected: ["fill1", "fill1"] },
+            { input: ["foo"], length: 0, expected: ["foo"] },
+            { input: ["foo"], length: 1, expected: ["foo"] },
+            { input: ["foo"], length: 2, expected: ["foo", "fill1"] },
+            { input: ["foo"], length: 3, expected: ["foo", "fill1", "fill1"] }
+        ];
+
+        fluid.each(testCases, function (testCase) {
+            var input = fluid.makeArray(testCase.input);
+            var result = c2lc.programUtils.expandProgram(input,
+                testCase.length, "fill1");
+            c2lc.tests.checkProgramEdit(testCase.input, testCase.expected,
+                input, result);
+        });
+    });
+
     jqUnit.test("c2lc.programUtils.insert", function () {
         jqUnit.expect(24);
 
@@ -69,22 +112,22 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         });
     });
 
-    jqUnit.test("c2lc.programUtils.deleteStep", function () {
+    jqUnit.test("c2lc.programUtils.trimEnd", function () {
         jqUnit.expect(28);
 
         var testCases = [
-            { input: [], index: 0, expected: [] },
-            { input: [], index: 2, expected: [] },
-            { input: ["foo"], index: 0, expected: [] },
-            { input: ["foo"], index: 1, expected: ["foo"] },
-            { input: ["foo"], index: 2, expected: ["foo"] },
-            { input: ["foo", "bar", "baz"], index: 0, expected: ["bar", "baz"] },
-            { input: ["foo", "bar", "baz"], index: 1, expected: ["foo", "baz"] }
+            { input: [], expected: [] },
+            { input: ["foo"], expected: ["foo"] },
+            { input: ["trim1"], expected: [] },
+            { input: ["foo", "trim1"], expected: ["foo"] },
+            { input: ["trim1", "trim1"], expected: [] },
+            { input: ["trim1", "foo"], expected: ["trim1", "foo"] },
+            { input: ["trim1", "foo", "trim1"], expected: ["trim1", "foo"] }
         ];
 
         fluid.each(testCases, function (testCase) {
             var input = fluid.makeArray(testCase.input);
-            var result = c2lc.programUtils.deleteStep(input, testCase.index);
+            var result = c2lc.programUtils.trimEnd(input, "trim1");
             c2lc.tests.checkProgramEdit(testCase.input, testCase.expected,
                 input, result);
         });

@@ -16,6 +16,20 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     var programUtils = fluid.registerNamespace("c2lc.programUtils");
 
+    programUtils.deleteStep = function (program, index) {
+        program = fluid.makeArray(program);
+        program.splice(index, 1);
+        return program;
+    };
+
+    programUtils.expandProgram = function (program, length, fill) {
+        program = fluid.makeArray(program);
+        while (program.length < length) {
+            program.push(fill);
+        }
+        return program;
+    };
+
     programUtils.insert = function (program, index, action, fill) {
         program = c2lc.programUtils.expandProgram(program, index, fill);
         program.splice(index, 0, action);
@@ -28,17 +42,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         return program;
     };
 
-    programUtils.expandProgram = function (program, length, fill) {
+    programUtils.trimEnd = function (program, action) {
         program = fluid.makeArray(program);
-        while (program.length < length) {
-            program.push(fill);
+        while ((program.length > 0)
+            && (program[program.length - 1] === action)) {
+            program.pop();
         }
-        return program;
-    };
-
-    programUtils.deleteStep = function (program, index) {
-        program = fluid.makeArray(program);
-        program.splice(index, 1);
         return program;
     };
 
