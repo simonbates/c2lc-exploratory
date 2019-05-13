@@ -134,7 +134,7 @@ Icons used:
         },
         markup: {
             blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block'><div class='c2lc-programBlockEditor-block-inner'><span role='img' aria-label='%label'>%svg</span></div></div>"
+            block: "<div class='c2lc-programBlockEditor-block' tabindex='0' role='button' aria-label='%label'><div class='c2lc-programBlockEditor-block-inner'>%svg</div></div>"
         }
     });
 
@@ -186,6 +186,7 @@ Icons used:
             }
         ));
         blockElem.click(clickHandler);
+        blockElem.keydown(clickHandler);
         return blockElem;
     };
 
@@ -237,10 +238,12 @@ Icons used:
     };
 
     c2lc.programBlockEditor.commandClickHandler = function (currentSelectedCommand, applier, evt) {
-        var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
-        if (targetBlockOuter.length === 1) {
-            var newSelectedCommandType = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorCommandtype;
-            var newSelectedCommandName = targetBlockOuter.get(0).dataset.c2lcProgramblockeditorCommandname;
+        if (evt.type === "click"
+            || (evt.type === "keydown"
+                && (evt.keyCode === 13 || evt.keyCode === 32))) {
+            evt.preventDefault();
+            var newSelectedCommandType = evt.delegateTarget.dataset.c2lcProgramblockeditorCommandtype;
+            var newSelectedCommandName = evt.delegateTarget.dataset.c2lcProgramblockeditorCommandname;
             if (currentSelectedCommand
                 && (newSelectedCommandType === currentSelectedCommand.type)
                 && (newSelectedCommandName === currentSelectedCommand.name)) {
@@ -256,10 +259,12 @@ Icons used:
     };
 
     c2lc.programBlockEditor.programBlockClickHandler = function (programBlockEditor, selectedCommand, evt) {
-        if (selectedCommand) {
-            var targetBlockOuter = $(evt.target).parents(".c2lc-programBlockEditor-block").first();
-            if (targetBlockOuter.length === 1) {
-                var targetIndex = parseInt(targetBlockOuter.get(0).dataset.c2lcProgramblockeditorIndex, 10);
+        if (evt.type === "click"
+            || (evt.type === "keydown"
+                && (evt.keyCode === 13 || evt.keyCode === 32))) {
+            evt.preventDefault();
+            if (selectedCommand) {
+                var targetIndex = parseInt(evt.delegateTarget.dataset.c2lcProgramblockeditorIndex, 10);
                 c2lc.programBlockEditor.doCommand(programBlockEditor, selectedCommand, targetIndex);
             }
         }
