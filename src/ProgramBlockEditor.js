@@ -58,7 +58,7 @@ Icons used:
             actions: ["forward", "left", "right"],
             editorCommands: ["delete"]
         },
-        minNumProgramSteps: 10,
+        minVisibleProgramSteps: 10,
         insertMode: "overwrite", // "insert" or "overwrite"
         model: {
             program: [],
@@ -195,9 +195,9 @@ Icons used:
 
         // Draw empty program steps, always adding at least one
 
-        var numEmptySteps = programBlockEditor.options.minNumProgramSteps > program.length ? programBlockEditor.options.minNumProgramSteps - program.length : 1;
+        var numStepsToAdd = programBlockEditor.options.minVisibleProgramSteps > program.length ? programBlockEditor.options.minVisibleProgramSteps - program.length : 1;
 
-        for (var i = 0; i < numEmptySteps; i++) {
+        for (var i = 0; i < numStepsToAdd; i++) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
                 programBlockEditor,
                 // eslint-disable-next-line dot-notation
@@ -255,39 +255,23 @@ Icons used:
     c2lc.programBlockEditor.doCommand = function (programBlockEditor, command, targetIndex) {
         if (command.type === "action") {
             if (programBlockEditor.options.insertMode === "insert") {
-                c2lc.programBlockEditor.insertProgramStep(programBlockEditor, targetIndex, command.name);
+                programBlockEditor.applier.change("program",
+                    c2lc.programUtils.insert(programBlockEditor.model.program,
+                        targetIndex, command.name, "none"));
             } else if (programBlockEditor.options.insertMode === "overwrite") {
-                c2lc.programBlockEditor.overwriteProgramStep(programBlockEditor, targetIndex, command.name);
+                programBlockEditor.applier.change("program",
+                    c2lc.programUtils.overwrite(programBlockEditor.model.program,
+                        targetIndex, command.name, "none"));
             }
         } else if (command.type === "editorCommand") {
             programBlockEditor.options.editorCommands[command.name].handler.apply(programBlockEditor, [targetIndex]);
         }
     };
 
-    c2lc.programBlockEditor.insertProgramStep = function (programBlockEditor, targetIndex, newAction) {
-        var program = fluid.makeArray(programBlockEditor.model.program);
-        c2lc.programBlockEditor.expandProgram(program, targetIndex);
-        program.splice(targetIndex, 0, newAction);
-        programBlockEditor.applier.change("program", program);
-    };
-
-    c2lc.programBlockEditor.overwriteProgramStep = function (programBlockEditor, targetIndex, newAction) {
-        var program = fluid.makeArray(programBlockEditor.model.program);
-        c2lc.programBlockEditor.expandProgram(program, targetIndex + 1);
-        program[targetIndex] = newAction;
-        programBlockEditor.applier.change("program", program);
-    };
-
-    c2lc.programBlockEditor.expandProgram = function (program, length) {
-        while (program.length < length) {
-            program.push("none");
-        }
-    };
-
     c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
-        var program = fluid.makeArray(programBlockEditor.model.program);
-        program.splice(targetIndex, 1);
-        programBlockEditor.applier.change("program", program);
+        programBlockEditor.applier.change("program",
+            c2lc.programUtils.deleteStep(programBlockEditor.model.program,
+                targetIndex));
     };
 
 })();
