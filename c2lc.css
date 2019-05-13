@@ -80,6 +80,7 @@ button {
 }
 
 .c2lc-programBlockEditor-block-inner {
+    cursor: pointer;
     border: 2px solid #000;
     background-color: #FFF;
     color: #000;
