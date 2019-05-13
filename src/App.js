@@ -51,7 +51,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     actions: {
                         "forward.turtle": "{that}.turtleForwardHandler",
                         "left.turtle": "{that}.turtleLeftHandler",
-                        "right.turtle": "{that}.turtleRightHandler"
+                        "right.turtle": "{that}.turtleRightHandler",
+                        "none": "{that}.noOperationHandler"
                     },
                     components: {
                         turtleForwardHandler: {
@@ -83,6 +84,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                     handleAction: {
                                         func: "{app}.graphics.right",
                                         args: [ 90 ]
+                                    }
+                                }
+                            }
+                        },
+                        noOperationHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        funcName: "fluid.identity",
+                                        args: []
                                     }
                                 }
                             }
