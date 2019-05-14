@@ -138,48 +138,55 @@ Icons used:
         }
     });
 
-    c2lc.programBlockEditor.render = function (programBlockEditor) {
-        programBlockEditor.container.html(programBlockEditor.options.markup.blockEditor);
+    c2lc.programBlockEditor.render = function (editor) {
+        editor.container.html(editor.options.markup.blockEditor);
 
         // Render actions
 
-        fluid.each(programBlockEditor.options.commandPalette.actions, function (action) {
+        fluid.each(editor.options.commandPalette.actions, function (action) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
-                programBlockEditor,
-                programBlockEditor.options.actions[action],
-                programBlockEditor.commandClickHandler
+                editor,
+                editor.options.actions[action],
+                editor.commandClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-commandtype", "action");
             blockElem.attr("data-c2lc-programblockeditor-commandname", action);
-            $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
+            $(".c2lc-programBlockEditor-commandPalette", editor.container)
+                .append(blockElem);
         });
 
         // Render editor commands
 
-        fluid.each(programBlockEditor.options.commandPalette.editorCommands, function (editorCommand) {
-            var blockElem = c2lc.programBlockEditor.makeBlockElem(
-                programBlockEditor,
-                programBlockEditor.options.editorCommands[editorCommand],
-                programBlockEditor.commandClickHandler
-            );
-            blockElem.attr("data-c2lc-programblockeditor-commandtype", "editorCommand");
-            blockElem.attr("data-c2lc-programblockeditor-commandname", editorCommand);
-            $(".c2lc-programBlockEditor-commandPalette", programBlockEditor.container).append(blockElem);
-        });
+        fluid.each(editor.options.commandPalette.editorCommands,
+            function (editorCommand) {
+                var blockElem = c2lc.programBlockEditor.makeBlockElem(
+                    editor,
+                    editor.options.editorCommands[editorCommand],
+                    editor.commandClickHandler
+                );
+                blockElem.attr("data-c2lc-programblockeditor-commandtype",
+                    "editorCommand");
+                blockElem.attr("data-c2lc-programblockeditor-commandname",
+                    editorCommand);
+                $(".c2lc-programBlockEditor-commandPalette", editor.container)
+                    .append(blockElem);
+            }
+        );
 
         // Render program
 
         c2lc.programBlockEditor.updateBlocksFromProgram(
-            programBlockEditor,
-            programBlockEditor.model.program,
-            $(programBlockEditor.options.selectors.programBlocks,
-                programBlockEditor.container)
+            editor,
+            editor.model.program,
+            $(editor.options.selectors.programBlocks,
+                editor.container)
         );
     };
 
-    c2lc.programBlockEditor.makeBlockElem = function (programBlockEditor, blockOptions, clickHandler) {
+    c2lc.programBlockEditor.makeBlockElem = function (editor, blockOptions,
+            clickHandler) {
         var blockElem = $(fluid.stringTemplate(
-            programBlockEditor.options.markup.block,
+            editor.options.markup.block,
             {
                 svg: blockOptions.svg,
                 label: blockOptions.label
@@ -190,7 +197,8 @@ Icons used:
         return blockElem;
     };
 
-    c2lc.programBlockEditor.updateBlocksFromProgram = function (programBlockEditor, program, blocksElem) {
+    c2lc.programBlockEditor.updateBlocksFromProgram = function (editor,
+            program, blocksElem) {
 
         // TODO: Don't empty and recreate the blocks as the user might have focus on one of them. Edit instead.
 
@@ -198,9 +206,9 @@ Icons used:
 
         fluid.each(program, function (action, i) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
-                programBlockEditor,
-                programBlockEditor.options.actions[action],
-                programBlockEditor.programBlockClickHandler
+                editor,
+                editor.options.actions[action],
+                editor.programBlockClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-action", action);
             blockElem.attr("data-c2lc-programblockeditor-index", i);
@@ -209,14 +217,16 @@ Icons used:
 
         // Draw empty program steps, always adding at least one
 
-        var numStepsToAdd = programBlockEditor.options.minVisibleProgramSteps > program.length ? programBlockEditor.options.minVisibleProgramSteps - program.length : 1;
+        var numStepsToAdd = editor.options.minVisibleProgramSteps > program.length
+            ? editor.options.minVisibleProgramSteps - program.length
+            : 1;
 
         for (var i = 0; i < numStepsToAdd; i++) {
             var blockElem = c2lc.programBlockEditor.makeBlockElem(
-                programBlockEditor,
+                editor,
                 // eslint-disable-next-line dot-notation
-                programBlockEditor.options.actions["none"],
-                programBlockEditor.programBlockClickHandler
+                editor.options.actions["none"],
+                editor.programBlockClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-action", "none");
             blockElem.attr("data-c2lc-programblockeditor-index",
@@ -225,19 +235,25 @@ Icons used:
         }
     };
 
-    c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette, selectedCommand) {
-        commandPalette.find(".c2lc-programBlockEditor-block").each(function (i, elem) {
-            if (selectedCommand
-                && (elem.dataset.c2lcProgramblockeditorCommandtype === selectedCommand.type)
-                && (elem.dataset.c2lcProgramblockeditorCommandname === selectedCommand.name)) {
-                $(elem).addClass("c2lc-programBlockEditor-block-selected");
-            } else {
-                $(elem).removeClass("c2lc-programBlockEditor-block-selected");
+    c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette,
+            selectedCommand) {
+        commandPalette.find(".c2lc-programBlockEditor-block").each(
+            function (i, elem) {
+                if (selectedCommand
+                    && (elem.dataset.c2lcProgramblockeditorCommandtype
+                        === selectedCommand.type)
+                    && (elem.dataset.c2lcProgramblockeditorCommandname
+                        === selectedCommand.name)) {
+                    $(elem).addClass("c2lc-programBlockEditor-block-selected");
+                } else {
+                    $(elem).removeClass("c2lc-programBlockEditor-block-selected");
+                }
             }
-        });
+        );
     };
 
-    c2lc.programBlockEditor.commandClickHandler = function (currentSelectedCommand, applier, evt) {
+    c2lc.programBlockEditor.commandClickHandler = function (currentSelectedCommand,
+            applier, evt) {
         if (evt.type === "click"
             || (evt.type === "keydown"
                 && (evt.keyCode === 13 || evt.keyCode === 32))) {
@@ -258,49 +274,49 @@ Icons used:
         }
     };
 
-    c2lc.programBlockEditor.programBlockClickHandler = function (programBlockEditor, selectedCommand, evt) {
+    c2lc.programBlockEditor.programBlockClickHandler = function (editor,
+            selectedCommand, evt) {
         if (evt.type === "click"
             || (evt.type === "keydown"
                 && (evt.keyCode === 13 || evt.keyCode === 32))) {
             evt.preventDefault();
             if (selectedCommand) {
                 var targetIndex = parseInt(evt.delegateTarget.dataset.c2lcProgramblockeditorIndex, 10);
-                c2lc.programBlockEditor.doCommand(programBlockEditor, selectedCommand, targetIndex);
+                c2lc.programBlockEditor.doCommand(editor, selectedCommand,
+                    targetIndex);
             }
         }
     };
 
-    c2lc.programBlockEditor.doCommand = function (programBlockEditor, command, targetIndex) {
+    c2lc.programBlockEditor.doCommand = function (editor, command, index) {
         if (command.type === "action") {
-            if (programBlockEditor.options.insertMode === "insert") {
-                programBlockEditor.applier.change("program",
-                    c2lc.programUtils.insert(programBlockEditor.model.program,
-                        targetIndex, command.name, "none"));
-            } else if (programBlockEditor.options.insertMode === "overwrite") {
-                programBlockEditor.applier.change("program",
-                    c2lc.programUtils.overwrite(programBlockEditor.model.program,
-                        targetIndex, command.name, "none"));
+            if (editor.options.insertMode === "insert") {
+                editor.applier.change("program",
+                    c2lc.programUtils.insert(editor.model.program,
+                        index, command.name, "none"));
+            } else if (editor.options.insertMode === "overwrite") {
+                editor.applier.change("program",
+                    c2lc.programUtils.overwrite(editor.model.program,
+                        index, command.name, "none"));
             }
         } else if (command.type === "editorCommand") {
-            programBlockEditor.options.editorCommands[command.name].handler.apply(programBlockEditor, [targetIndex]);
+            editor.options.editorCommands[command.name].handler.apply(editor, [index]);
         }
     };
 
-    c2lc.programBlockEditor.insertSpaceHandler = function (programBlockEditor, index) {
-        if (index < programBlockEditor.model.program.length) {
-            programBlockEditor.applier.change("program",
-                c2lc.programUtils.insert(programBlockEditor.model.program,
+    c2lc.programBlockEditor.insertSpaceHandler = function (editor, index) {
+        if (index < editor.model.program.length) {
+            editor.applier.change("program",
+                c2lc.programUtils.insert(editor.model.program,
                     index, "none", "none"));
         }
     };
 
-    c2lc.programBlockEditor.deleteHandler = function (programBlockEditor, targetIndex) {
-        programBlockEditor.applier.change("program",
+    c2lc.programBlockEditor.deleteHandler = function (editor, index) {
+        editor.applier.change("program",
             c2lc.programUtils.trimEnd(
-                c2lc.programUtils.deleteStep(programBlockEditor.model.program,
-                    targetIndex),
-                "none"
-            ));
+                c2lc.programUtils.deleteStep(editor.model.program, index),
+                "none"));
     };
 
 })();
