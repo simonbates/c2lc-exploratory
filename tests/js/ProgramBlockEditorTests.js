@@ -41,7 +41,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             name: "Program Block Editor Tests",
             tests: [
                 {
-                    expect: 51,
+                    expect: 74,
                     name: "Check program block rendering",
                     sequence: [
                         // An empty program initially
@@ -50,10 +50,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkProgramBlocks",
                             args: [
                                 [
-                                    { index: 0, action: "none" },
-                                    { index: 1, action: "none" },
-                                    { index: 2, action: "none" },
-                                    { index: 3, action: "none" }
+                                    { index: 0, action: "none", label: "None" },
+                                    { index: 1, action: "none", label: "None" },
+                                    { index: 2, action: "none", label: "None" },
+                                    { index: 3, action: "none", label: "None" }
                                 ],
                                 "{programBlockEditor}.dom.programBlocks"
                             ]
@@ -67,10 +67,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkProgramBlocks",
                             args: [
                                 [
-                                    { index: 0, action: "forward" },
-                                    { index: 1, action: "none" },
-                                    { index: 2, action: "none" },
-                                    { index: 3, action: "none" }
+                                    { index: 0, action: "forward", label: "Forward" },
+                                    { index: 1, action: "none", label: "None" },
+                                    { index: 2, action: "none", label: "None" },
+                                    { index: 3, action: "none", label: "None" }
                                 ],
                                 "{programBlockEditor}.dom.programBlocks"
                             ]
@@ -87,12 +87,12 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkProgramBlocks",
                             args: [
                                 [
-                                    { index: 0, action: "left" },
-                                    { index: 1, action: "none" },
-                                    { index: 2, action: "none" },
-                                    { index: 3, action: "right" },
-                                    { index: 4, action: "forward" },
-                                    { index: 5, action: "none" }
+                                    { index: 0, action: "left", label: "Left" },
+                                    { index: 1, action: "none", label: "None" },
+                                    { index: 2, action: "none", label: "None" },
+                                    { index: 3, action: "right", label: "Right" },
+                                    { index: 4, action: "forward", label: "Forward" },
+                                    { index: 5, action: "none", label: "None" }
                                 ],
                                 "{programBlockEditor}.dom.programBlocks"
                             ]
@@ -109,11 +109,11 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkProgramBlocks",
                             args: [
                                 [
-                                    { index: 0, action: "left" },
-                                    { index: 1, action: "none" },
-                                    { index: 2, action: "right" },
-                                    { index: 3, action: "forward" },
-                                    { index: 4, action: "none" }
+                                    { index: 0, action: "left", label: "Left" },
+                                    { index: 1, action: "none", label: "None" },
+                                    { index: 2, action: "right", label: "Right" },
+                                    { index: 3, action: "forward", label: "Forward" },
+                                    { index: 4, action: "none", label: "None" }
                                 ],
                                 "{programBlockEditor}.dom.programBlocks"
                             ]
@@ -130,10 +130,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkProgramBlocks",
                             args: [
                                 [
-                                    { index: 0, action: "left" },
-                                    { index: 1, action: "right" },
-                                    { index: 2, action: "forward" },
-                                    { index: 3, action: "none" }
+                                    { index: 0, action: "left", label: "Left" },
+                                    { index: 1, action: "right", label: "Right" },
+                                    { index: 2, action: "forward", label: "Forward" },
+                                    { index: 3, action: "none", label: "None" }
                                 ],
                                 "{programBlockEditor}.dom.programBlocks"
                             ]
@@ -153,6 +153,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 parseInt(blocks.get(i).dataset.c2lcProgramblockeditorIndex, 10));
             jqUnit.assertEquals("Expected action", expected[i].action,
                 blocks.get(i).dataset.c2lcProgramblockeditorAction);
+            jqUnit.assertEquals("Expected label", expected[i].label,
+                blocks.get(i).getAttribute("aria-label"));
         }
     };
 
