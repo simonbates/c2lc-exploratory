@@ -134,7 +134,7 @@ Icons used:
         },
         markup: {
             blockEditor: "<h2>Commands</h2><div class='c2lc-programBlockEditor-commandPalette'></div><h2>Program</h2><div class='c2lc-programBlockEditor-programBlocks'></div>",
-            block: "<div class='c2lc-programBlockEditor-block' tabindex='0' role='button' aria-label='%label'><div class='c2lc-programBlockEditor-block-inner'>%svg</div></div>"
+            block: "<div class='c2lc-programBlockEditor-block' tabindex='0' role='button' aria-label='%label'><div class='c2lc-programBlockEditor-block-image'>%svg</div></div>"
         }
     });
 
@@ -200,39 +200,83 @@ Icons used:
     c2lc.programBlockEditor.updateBlocksFromProgram = function (editor,
             program, blocksElem) {
 
-        // TODO: Don't empty and recreate the blocks as the user might have focus on one of them. Edit instead.
+        var blocks = $(".c2lc-programBlockEditor-block", blocksElem);
+        var index = 0;
+        var blockElem;
 
-        blocksElem.empty();
+        // Calculate the number of visible steps we need
 
-        fluid.each(program, function (action, i) {
-            var blockElem = c2lc.programBlockEditor.makeBlockElem(
+        var totalNumSteps = Math.max(editor.options.minVisibleProgramSteps,
+            program.length + 1);
+        var numEmptySteps = totalNumSteps - program.length;
+
+        // Update existing blocks, if any
+
+        while (index < blocks.length) {
+            blockElem = $(blocks.get(index));
+            if (index < program.length) {
+                c2lc.programBlockEditor.updateProgramBlockContents(
+                    blockElem,
+                    index,
+                    program[index],
+                    editor.options.actions[program[index]].label,
+                    editor.options.actions[program[index]].svg
+                );
+            } else if (numEmptySteps > 0) {
+                c2lc.programBlockEditor.updateProgramBlockContents(
+                    blockElem,
+                    index,
+                    "none",
+                    // eslint-disable-next-line dot-notation
+                    editor.options.actions["none"].label,
+                    // eslint-disable-next-line dot-notation
+                    editor.options.actions["none"].svg
+                );
+                numEmptySteps--;
+            } else {
+                // We are at the end of the program and have no more empty
+                // steps to add, so we should remove the block
+                blockElem.remove();
+            }
+            index++;
+        }
+
+        // Add new program blocks as needed
+
+        while (index < program.length) {
+            blockElem = c2lc.programBlockEditor.makeBlockElem(
                 editor,
-                editor.options.actions[action],
+                editor.options.actions[program[index]],
                 editor.programBlockClickHandler
             );
-            blockElem.attr("data-c2lc-programblockeditor-action", action);
-            blockElem.attr("data-c2lc-programblockeditor-index", i);
+            blockElem.attr("data-c2lc-programblockeditor-action", program[index]);
+            blockElem.attr("data-c2lc-programblockeditor-index", index);
             blocksElem.append(blockElem);
-        });
+            index++;
+        }
 
-        // Draw empty program steps, always adding at least one
+        // Add empty program steps as needed
 
-        var numStepsToAdd = editor.options.minVisibleProgramSteps > program.length
-            ? editor.options.minVisibleProgramSteps - program.length
-            : 1;
-
-        for (var i = 0; i < numStepsToAdd; i++) {
-            var blockElem = c2lc.programBlockEditor.makeBlockElem(
+        while (index < totalNumSteps) {
+            blockElem = c2lc.programBlockEditor.makeBlockElem(
                 editor,
                 // eslint-disable-next-line dot-notation
                 editor.options.actions["none"],
                 editor.programBlockClickHandler
             );
             blockElem.attr("data-c2lc-programblockeditor-action", "none");
-            blockElem.attr("data-c2lc-programblockeditor-index",
-                program.length + i);
+            blockElem.attr("data-c2lc-programblockeditor-index", index);
             blocksElem.append(blockElem);
+            index++;
         }
+    };
+
+    c2lc.programBlockEditor.updateProgramBlockContents = function (blockElem,
+            index, action, label, svg) {
+        blockElem.attr("data-c2lc-programblockeditor-index", index);
+        blockElem.attr("data-c2lc-programblockeditor-action", action);
+        blockElem.attr("aria-label", label);
+        $(".c2lc-programBlockEditor-block-image", blockElem).html(svg);
     };
 
     c2lc.programBlockEditor.updateSelectedCommand = function (commandPalette,
