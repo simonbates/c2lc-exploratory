@@ -16,6 +16,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         gradeNames: ["fluid.modelComponent", "fluid.contextAware"],
         graphicsContainer: null, // To be provided
         interpreterControlsContainer: null, // To be provided
+        blockEditorContainer: null, // To be provided
         textEditorContainer: null, // To be provided
         dashConnectControlContainer: null, // To be provided
         spheroConnectControlContainer: null, // To be provided
@@ -50,7 +51,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     actions: {
                         "forward.turtle": "{that}.turtleForwardHandler",
                         "left.turtle": "{that}.turtleLeftHandler",
-                        "right.turtle": "{that}.turtleRightHandler"
+                        "right.turtle": "{that}.turtleRightHandler",
+                        "none": "{that}.noOperationHandler"
                     },
                     components: {
                         turtleForwardHandler: {
@@ -82,6 +84,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                                     handleAction: {
                                         func: "{app}.graphics.right",
                                         args: [ 90 ]
+                                    }
+                                }
+                            }
+                        },
+                        noOperationHandler: {
+                            type: "c2lc.actionHandler",
+                            options: {
+                                invokers: {
+                                    handleAction: {
+                                        funcName: "fluid.identity",
+                                        args: []
                                     }
                                 }
                             }
@@ -130,6 +143,15 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     },
                     components: {
                         syntax: "{textEditorSyntax}"
+                    }
+                }
+            },
+            blockEditor: {
+                type: "c2lc.programBlockEditor",
+                container: "{app}.options.blockEditorContainer",
+                options: {
+                    model: {
+                        program: "{app}.model.program"
                     }
                 }
             }

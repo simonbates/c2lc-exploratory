@@ -54,6 +54,38 @@ button {
     stroke-width: 0.3;
 }
 
+.c2lc-blockEditor {
+    width: 30rem;
+    margin-bottom: 0.5rem;
+}
+
+.c2lc-blockEditor h2 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.c2lc-programBlockEditor-block {
+    display: inline-block;
+    margin: 0 0.5rem 0.5rem 0;
+    border: 4px solid #FFF;
+}
+
+.c2lc-programBlockEditor-block svg {
+    width: 64px;
+    height: 64px;
+}
+
+.c2lc-programBlockEditor-block-selected {
+    border-color: #000;
+}
+
+.c2lc-programBlockEditor-block-image {
+    cursor: pointer;
+    border: 2px solid #000;
+    background-color: #FFF;
+    color: #000;
+}
+
 .c2lc-textEditor {
     width: 30rem;
 }
