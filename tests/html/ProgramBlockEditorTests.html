@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Program Block Editor Tests</title>
+
+        <link rel="stylesheet" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" media="screen"/>
+
+        <script src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <script src="../../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit-browser.js"></script>
+        <script src="../../node_modules/infusion/tests/test-core/utils/js/IoCTestUtils.js"></script>
+
+        <script src="../../src/ProgramBlockEditor.js"></script>
+
+        <script src="../js/ProgramBlockEditorTests.js"></script>
+    </head>
+    <body id="body">
+        <h1 id="qunit-header">Program Block Editor Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <div class="c2lc-blockEditor"></div>
+
+        <script>
+            $(document).ready(function () {
+                fluid.test.runTests("c2lc.tests.programBlockEditorTestTree");
+            });
+        </script>
+    </body>
+</html>
