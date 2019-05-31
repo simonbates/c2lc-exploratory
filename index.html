@@ -7,6 +7,8 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link href="c2lc.css" rel="stylesheet">
 
+        <link rel="manifest" href="manifest.json">
+
         <script src="node_modules/infusion/dist/infusion-all.js"></script>
         <script src="src/FeatureDetection.js"></script>
         <script src="src/Interpreter.js"></script>
@@ -49,6 +51,12 @@
             <p>Square: <a class="c2lc-example" href="#">forward left forward left forward left forward left</a></p>
         </div>
         <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker.register("ServiceWorker.js");
+                });
+            }
+
             $(document).ready(function () {
                 fluid.contextAware.makeChecks({
                     "c2lc.bluetoothApiIsAvailable": "c2lc.bluetoothApiIsAvailable"
