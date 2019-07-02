@@ -26,7 +26,10 @@ module.exports = function (grunt) {
                         src: [
                             "node_modules/infusion/dist/infusion-all.js",
                             "src/**",
+                            "icons/**",
                             "index.html",
+                            "manifest.json",
+                            "ServiceWorker.js",
                             "c2lc.css"
                         ],
                         dest: "build"
