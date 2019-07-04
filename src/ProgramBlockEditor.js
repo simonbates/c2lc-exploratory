@@ -68,12 +68,13 @@ Icons used:
         insertMode: "overwrite", // "insert" or "overwrite"
         model: {
             program: [],
-            selectedCommand: null // Initially no command is selected
+            selectedCommand: null, // Initially no command is selected
                 // Model value structure:
                 // {
                 //     type: "action" OR "editorCommand"
                 //     name: COMMAND-NAME
                 // }
+            enabled: true
         },
         invokers: {
             commandClickHandler: {
@@ -126,6 +127,10 @@ Icons used:
             selectedCommand: {
                 funcName: "c2lc.programBlockEditor.updateSelectedCommand",
                 args: ["{that}.dom.commandPalette", "{change}.value"]
+            },
+            enabled: {
+                funcName: "c2lc.programBlockEditor.enabledStateChanged",
+                args: ["{change}.value"]
             }
         },
         selectors: {
@@ -361,6 +366,12 @@ Icons used:
             c2lc.programUtils.trimEnd(
                 c2lc.programUtils.deleteStep(editor.model.program, index),
                 "none"));
+    };
+
+    c2lc.programBlockEditor.enabledStateChanged = function (enabled) {
+        // TODO
+        console.log("Block Editor enabled state changed to: "
+            + (enabled ? "true" : "false"));
     };
 
 })();

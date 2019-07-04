@@ -26,6 +26,7 @@
         <script src="src/SpheroDriver.js"></script>
         <script src="src/SpheroTurtle.js"></script>
         <script src="src/DeviceConnectControl.js"></script>
+        <script src="src/CustomLayoutControl.js"></script>
         <script src="src/App.js"></script>
     </head>
     <body>
@@ -50,6 +51,7 @@
             <h2>Examples</h2>
             <p>Square: <a class="c2lc-example" href="#">forward left forward left forward left forward left</a></p>
         </div>
+        <div class="c2lc-customLayoutControl"></div>
         <script>
             if ("serviceWorker" in navigator) {
                 window.addEventListener("load", function () {
@@ -67,7 +69,8 @@
                     blockEditorContainer: ".c2lc-blockEditor",
                     textEditorContainer: ".c2lc-textEditor",
                     dashConnectControlContainer: ".c2lc-dashConnectControl",
-                    spheroConnectControlContainer: ".c2lc-spheroConnectControl"
+                    spheroConnectControlContainer: ".c2lc-spheroConnectControl",
+                    customLayoutControlContainer: ".c2lc-customLayoutControl"
                 });
                 var syntax = c2lc.textSyntax();
                 $(".c2lc-example").click(function (event) {

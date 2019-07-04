@@ -20,8 +20,13 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         textEditorContainer: null, // To be provided
         dashConnectControlContainer: null, // To be provided
         spheroConnectControlContainer: null, // To be provided
+        customLayoutControlContainer: null, // To be provided
         model: {
-            program: []
+            program: [],
+            features: {
+                blockEditor: true,
+                textEditor: true
+            }
         },
         contextAwareness: {
             dashRobotIntegration: {
@@ -139,7 +144,8 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 container: "{app}.options.textEditorContainer",
                 options: {
                     model: {
-                        program: "{app}.model.program"
+                        program: "{app}.model.program",
+                        enabled: "{app}.model.features.textEditor"
                     },
                     components: {
                         syntax: "{textEditorSyntax}"
@@ -151,7 +157,17 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 container: "{app}.options.blockEditorContainer",
                 options: {
                     model: {
-                        program: "{app}.model.program"
+                        program: "{app}.model.program",
+                        enabled: "{app}.model.features.blockEditor"
+                    }
+                }
+            },
+            customLayoutControl: {
+                type: "c2lc.customLayoutControl",
+                container: "{app}.options.customLayoutControlContainer",
+                options: {
+                    model: {
+                        features: "{app}.model.features"
                     }
                 }
             }
