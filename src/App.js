@@ -339,7 +339,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 ]
             );
         } else {
-            that.featureComponentInstances[featureName].destroy();
+            var instance = that.featureComponentInstances[featureName];
+            if (instance) {
+                instance.destroy();
+            }
         }
     };
 
