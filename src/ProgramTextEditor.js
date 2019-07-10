@@ -17,8 +17,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     fluid.defaults("c2lc.programTextEditor", {
         gradeNames: "fluid.viewComponent",
         model: {
-            program: [],
-            enabled: true
+            program: []
         },
         components: {
             syntax: null // To be provided
@@ -57,6 +56,10 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                 "this": "{that}.dom.textEditor",
                 method: "change",
                 args: ["{that}.updateProgramFromTextarea"]
+            },
+            "onDestroy.destroyUI": {
+                "this": "{that}.container",
+                method: "empty"
             }
         },
         modelListeners: {
@@ -68,10 +71,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     "{syntax}"
                 ],
                 excludeSource: ["init", "c2lc-programTextEditor-textEditor"]
-            },
-            enabled: {
-                funcName: "c2lc.programTextEditor.enabledStateChanged",
-                args: ["{change}.value"]
             }
         },
         selectors: {
@@ -96,12 +95,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     c2lc.programTextEditor.updateTextareaFromProgram = function (program, textarea, syntax) {
         textarea.val(syntax.print(program));
-    };
-
-    c2lc.programTextEditor.enabledStateChanged = function (enabled) {
-        // TODO
-        console.log("Text Editor enabled state changed to: "
-            + (enabled ? "true" : "false"));
     };
 
 })();
