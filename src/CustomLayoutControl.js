@@ -52,20 +52,20 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
         }
     });
 
-    c2lc.customLayoutControl.render = function (control, featureChangeHandler) {
-        fluid.each(control.options.features, function (feature) {
+    c2lc.customLayoutControl.render = function (that, featureChangeHandler) {
+        fluid.each(that.options.features, function (feature) {
             var checkbox = $("<input type='checkbox'>");
             var id = fluid.allocateSimpleId(checkbox);
             checkbox.attr("name", feature.name);
             checkbox.prop("checked",
-                !!control.model.features[feature.name]);
+                !!that.model.features[feature.name]);
             checkbox.change(featureChangeHandler);
-            control.container.append(checkbox);
+            that.container.append(checkbox);
 
             var label = $("<label></label>");
             label.text(feature.label);
             label.attr("for", id);
-            control.container.append(label);
+            that.container.append(label);
         });
     };
 
