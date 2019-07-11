@@ -12,8 +12,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 
     "use strict";
 
-    var c2lc = fluid.registerNamespace("c2lc");
-
     fluid.defaults("c2lc.app", {
         gradeNames: ["fluid.modelComponent", "fluid.contextAware", "fluid.resolveRoot"],
         graphicsContainer: null, // To be provided
@@ -47,10 +45,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                     }
                 }
             }
-        },
-        members: {
-             // Container for dynamically created/destroyed feature components
-            featureComponentInstances: {}
         },
         components: {
             interpreter: {
@@ -145,6 +139,39 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             textEditorSyntax: {
                 type: "c2lc.textSyntax"
             },
+            textEditor: {
+                type: "c2lc.optionalComponentHolder",
+                options: {
+                    model: {
+                        enabled: "{app}.model.features.textEditor"
+                    },
+                    componentType: "c2lc.programTextEditor",
+                    componentContainer: "{app}.options.textEditorContainer",
+                    componentOptions: {
+                        model: {
+                            program: "{app}.model.program"
+                        },
+                        components: {
+                            syntax: "{app}.textEditorSyntax"
+                        }
+                    }
+                }
+            },
+            blockEditor: {
+                type: "c2lc.optionalComponentHolder",
+                options: {
+                    model: {
+                        enabled: "{app}.model.features.blockEditor"
+                    },
+                    componentType: "c2lc.programBlockEditor",
+                    componentContainer: "{app}.options.blockEditorContainer",
+                    componentOptions: {
+                        model: {
+                            program: "{app}.model.program"
+                        }
+                    }
+                }
+            },
             customLayoutControl: {
                 type: "c2lc.customLayoutControl",
                 container: "{app}.options.customLayoutControlContainer",
@@ -153,49 +180,6 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         features: "{app}.model.features"
                     }
                 }
-            }
-        },
-        featureComponents: {
-            blockEditor: {
-                type: "c2lc.programBlockEditor",
-                container: "{app}.options.blockEditorContainer",
-                options: {
-                    expander: {
-                        type: "fluid.noexpand",
-                        value: {
-                            model: {
-                                program: "{app}.model.program"
-                            }
-                        }
-                    }
-                }
-            },
-            textEditor: {
-                type: "c2lc.programTextEditor",
-                container: "{app}.options.textEditorContainer",
-                options: {
-                    expander: {
-                        type: "fluid.noexpand",
-                        value: {
-                            model: {
-                                program: "{app}.model.program"
-                            },
-                            components: {
-                                syntax: "{app}.textEditorSyntax"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        modelListeners: {
-            "features.blockEditor": {
-                funcName: "c2lc.app.featureEnabledStateChanged",
-                args: ["{that}", "blockEditor", "{change}.value"]
-            },
-            "features.textEditor": {
-                funcName: "c2lc.app.featureEnabledStateChanged",
-                args: ["{that}", "textEditor", "{change}.value"]
             }
         }
     });
@@ -328,22 +312,5 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
             }
         }
     });
-
-    c2lc.app.featureEnabledStateChanged = function (that, featureName, featureEnabled) {
-        if (featureEnabled) {
-            var creator = fluid.getGlobalValue(that.options.featureComponents[featureName].type);
-            that.featureComponentInstances[featureName] = creator.apply(null,
-                [
-                    that.options.featureComponents[featureName].container,
-                    that.options.featureComponents[featureName].options
-                ]
-            );
-        } else {
-            var instance = that.featureComponentInstances[featureName];
-            if (instance) {
-                instance.destroy();
-            }
-        }
-    };
 
 })();
