@@ -52,7 +52,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkLabelConnectedToTextarea",
                             args: [
                                 "{programTextEditor}.dom.label",
-                                "{programTextEditor}.dom.textEditor"
+                                "{programTextEditor}.dom.textarea"
                             ]
                         }
                     ]
@@ -65,7 +65,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkTextEditorContents",
                             args: [
                                 "foo bar baz",
-                                "{programTextEditor}.dom.textEditor"
+                                "{programTextEditor}.dom.textarea"
                             ]
                         }
                     ]
@@ -82,7 +82,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                             funcName: "c2lc.tests.checkTextEditorContents",
                             args: [
                                 "hello world",
-                                "{programTextEditor}.dom.textEditor"
+                                "{programTextEditor}.dom.textarea"
                             ]
                         }
                     ]
@@ -94,7 +94,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
                         {
                             funcName: "c2lc.tests.setTextEditorContents",
                             args: [
-                                "{programTextEditor}.dom.textEditor",
+                                "{programTextEditor}.dom.textarea",
                                 " a  b   c "
                             ]
                         },
