@@ -8,14 +8,27 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
-/* eslint-env node */
+/* eslint-env node, es6 */
 
 "use strict";
+
+var child_process = require("child_process");
+var fs = require("fs");
+var path = require("path");
 
 module.exports = function (grunt) {
     grunt.config.init({
         clean: {
             build: ["build"]
+        },
+        handlebars: {
+            compile: {
+                files: {
+                    "gen/Templates.js": [
+                        "src/ProgramTextEditorTemplate.handlebars"
+                    ]
+                }
+            }
         },
         copy: {
             build: {
@@ -48,7 +61,7 @@ module.exports = function (grunt) {
         },
         lintAll: {
             sources: {
-                js: ["*.js"],
+                js: ["*.js", "!gen/*.js"],
                 json: ["*.json"]
             }
         }
@@ -63,6 +76,18 @@ module.exports = function (grunt) {
         "Create an empty build/.nojekyll file",
         function () {
             grunt.file.write("build/.nojekyll", "");
+        }
+    );
+
+    grunt.registerMultiTask("handlebars",
+        "Precompile Handlebars templates",
+        function () {
+            for (const output in this.data.files) {
+                fs.mkdirSync(path.dirname(output), { recursive: true });
+                let sources = this.data.files[output];
+                let command = `npx handlebars ${sources.join(" ")} --output ${output}`;
+                child_process.execSync(command);
+            }
         }
     );
 

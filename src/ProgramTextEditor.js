@@ -8,6 +8,8 @@ You may obtain a copy of the 3-Clause BSD License at
 https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
 */
 
+/* global Handlebars */
+
 (function () {
 
     "use strict";
@@ -56,7 +58,7 @@ https://github.com/simonbates/c2lc-exploratory/raw/master/LICENSE.txt
     });
 
     c2lc.programTextEditor.render = function (that) {
-        that.container.html(c2lc.templates.programTextEditor({
+        that.container.html(Handlebars.templates.ProgramTextEditorTemplate({
             textareaId: fluid.allocateGuid()
         }));
         // Set initial text editor contents
