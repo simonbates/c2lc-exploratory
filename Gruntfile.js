@@ -22,7 +22,7 @@ module.exports = function (grunt) {
             build: ["build"]
         },
         handlebars: {
-            compile: {
+            compileAll: {
                 files: {
                     "gen/Templates.js": [
                         "src/ProgramTextEditorTemplate.handlebars"
@@ -54,9 +54,14 @@ module.exports = function (grunt) {
             devServer: {
                 options: {
                     hostname: "127.0.0.1",
-                    port: 8081,
-                    keepalive: true
+                    port: 8081
                 }
+            }
+        },
+        watch: {
+            handlebars: {
+                files: ["**/*.handlebars"],
+                tasks: ["handlebars:compileAll"]
             }
         },
         lintAll: {
@@ -71,6 +76,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-contrib-watch");
 
     grunt.registerTask("createNojekyll",
         "Create an empty build/.nojekyll file",
@@ -80,7 +86,7 @@ module.exports = function (grunt) {
     );
 
     grunt.registerMultiTask("handlebars",
-        "Precompile Handlebars templates",
+        "Compile Handlebars templates",
         function () {
             for (const output in this.data.files) {
                 fs.mkdirSync(path.dirname(output), { recursive: true });
@@ -95,7 +101,11 @@ module.exports = function (grunt) {
         "clean:build", "copy:build", "createNojekyll"
     ]);
     grunt.registerTask("lint", "Perform lint checks", ["lint-all"]);
-    grunt.registerTask("server", "Run a local dev web server", ["connect:devServer"]);
+    grunt.registerTask("start", "Run a local dev web server", [
+        "handlebars:compileAll",
+        "connect:devServer",
+        "watch:handlebars"
+    ]);
 
     grunt.registerTask("default", ["build"]);
 };

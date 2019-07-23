@@ -5,5 +5,5 @@ Exploratory programming for the Coding to Learn and Create project.
 To run the code:
 
 - `npm install`
-- `grunt server`
+- `grunt start`
 - Open http://localhost:8081/
